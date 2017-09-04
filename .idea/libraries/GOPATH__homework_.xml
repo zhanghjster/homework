@@ -1,0 +1,57 @@
+<component name="libraryTable">
+  <library name="GOPATH &lt;homework&gt;">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../../datacenter" />
+      <root url="file://$PROJECT_DIR$/../../../test" />
+      <root url="file://$PROJECT_DIR$/../../../grpc" />
+      <root url="file://$PROJECT_DIR$/../../../gobPost" />
+      <root url="file://$PROJECT_DIR$/../../../dcp" />
+      <root url="file://$PROJECT_DIR$/../../../rpcc" />
+      <root url="file://$PROJECT_DIR$/../../../crawler" />
+      <root url="file://$PROJECT_DIR$/../../../google.golang.org" />
+      <root url="file://$PROJECT_DIR$/../../../proces" />
+      <root url="file://$PROJECT_DIR$/../../../golang.org" />
+      <root url="file://$PROJECT_DIR$/../../../move" />
+      <root url="file://$PROJECT_DIR$/../../../gopkg.in" />
+      <root url="file://$PROJECT_DIR$/../../../defer" />
+      <root url="file://$PROJECT_DIR$/../../../re" />
+      <root url="file://$PROJECT_DIR$/../../../stringp" />
+      <root url="file://$PROJECT_DIR$/../../../reflect" />
+      <root url="file://$PROJECT_DIR$/../../../primitive" />
+      <root url="file://$PROJECT_DIR$/../.." />
+      <root url="file://$PROJECT_DIR$/../../../cdptest" />
+      <root url="file://$PROJECT_DIR$/../../../escapetest" />
+      <root url="file://$PROJECT_DIR$/../../../c" />
+      <root url="file://$PROJECT_DIR$/../../../Homework" />
+      <root url="file://$PROJECT_DIR$/../../../rando" />
+    </CLASSES>
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../../../datacenter" />
+      <root url="file://$PROJECT_DIR$/../../../test" />
+      <root url="file://$PROJECT_DIR$/../../../grpc" />
+      <root url="file://$PROJECT_DIR$/../../../gobPost" />
+      <root url="file://$PROJECT_DIR$/../../../dcp" />
+      <root url="file://$PROJECT_DIR$/../../../rpcc" />
+      <root url="file://$PROJECT_DIR$/../../../crawler" />
+      <root url="file://$PROJECT_DIR$/../../../google.golang.org" />
+      <root url="file://$PROJECT_DIR$/../../../proces" />
+      <root url="file://$PROJECT_DIR$/../../../golang.org" />
+      <root url="file://$PROJECT_DIR$/../../../move" />
+      <root url="file://$PROJECT_DIR$/../../../gopkg.in" />
+      <root url="file://$PROJECT_DIR$/../../../defer" />
+      <root url="file://$PROJECT_DIR$/../../../re" />
+      <root url="file://$PROJECT_DIR$/../../../stringp" />
+      <root url="file://$PROJECT_DIR$/../../../reflect" />
+      <root url="file://$PROJECT_DIR$/../../../primitive" />
+      <root url="file://$PROJECT_DIR$/../.." />
+      <root url="file://$PROJECT_DIR$/../../../cdptest" />
+      <root url="file://$PROJECT_DIR$/../../../escapetest" />
+      <root url="file://$PROJECT_DIR$/../../../c" />
+      <root url="file://$PROJECT_DIR$/../../../Homework" />
+      <root url="file://$PROJECT_DIR$/../../../rando" />
+    </SOURCES>
+    <excluded>
+      <root url="file://$PROJECT_DIR$" />
+    </excluded>
+  </library>
+</component>
