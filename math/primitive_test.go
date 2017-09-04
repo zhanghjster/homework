@@ -23,3 +23,5 @@ func TestFindAllPrimitive(t *testing.T) {
 func BenchmarkFindAllPrimitive(b *testing.B) {
 	FindAllPrimitive(uint64(b.N))
 }
+
+
