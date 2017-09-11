@@ -5,7 +5,7 @@ import (
 )
 
 func TestIsPrimitive(t *testing.T) {
-	var p, np uint64 = 13, 30
+	var p, np uint64 = 16777619, 30
 
 	if !IsPrimitive(p) {
 		t.Fatal(p, "should be primitive")
