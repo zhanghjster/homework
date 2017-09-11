@@ -1,11 +1,16 @@
 package main
 
-func main() {
-	const sample1 = "a中国b"
+import (
+	"container/list"
+	"container/heap"
+)
 
-	for i, w := 0,0; i < len(sample1); i += w {
-		v, width := utf8.DecodeRuneInString(sample1[i:])
-		fmt.Printf("%#U\n", v)
-		w = width
-	}
+func main() {
+
+	var a uint8 = 255
+	list.New()
+	println(a * 4)
+	heap.Init()
+
 }
+
