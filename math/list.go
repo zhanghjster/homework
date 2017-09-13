@@ -15,7 +15,9 @@ type List struct {
  */
 func RevertLink(list *List) {
 	var head *Item
+
 	for cur := list.sentinel.next; cur != nil; {
+
 		// save the next item pointer
 		next := cur.next
 

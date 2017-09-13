@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type Item struct {
 	next *Item
 	value int
@@ -9,7 +11,7 @@ type List struct {
 	sentinel Item
 }
 
-func RevertLinkList(list *List) {
+func ReverseLinkedList(list *List) {
 	var head *Item
 	for cur := list.sentinel.next; cur != nil; {
 		// save the next item pointer
@@ -29,20 +31,8 @@ func RevertLinkList(list *List) {
 }
 
 func main() {
-	var list = List{}
-
-	cur := &list.sentinel
-
-	for i :=0; i<100; i++ {
-		cur.next = &Item{
-			value: i,
-		}
-		cur = cur.next
-	}
-
-	RevertLinkList(&list)
-
-	for head := list.sentinel.next;head != nil; head = head.next {
-		println(head.value)
-	}
+	//
+	var xor = ^uint8(0)
+	var n uint8 = 1
+	fmt.Printf("%08b\n", byte(n^xor))
 }
