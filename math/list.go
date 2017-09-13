@@ -1,4 +1,4 @@
-package main
+package math
 
 type Item struct {
 	next *Item
@@ -9,7 +9,11 @@ type List struct {
 	sentinel Item
 }
 
-func RevertLinkList(list *List) {
+/*
+ *	given a linked list, revert it in-place and one-pass
+ *  a -> b -> c -> d -> e -> to e -> d -> c -> b ->a
+ */
+func RevertLink(list *List) {
 	var head *Item
 	for cur := list.sentinel.next; cur != nil; {
 		// save the next item pointer
@@ -26,23 +30,4 @@ func RevertLinkList(list *List) {
 	}
 
 	list.sentinel.next = head
-}
-
-func main() {
-	var list = List{}
-
-	cur := &list.sentinel
-
-	for i :=0; i<100; i++ {
-		cur.next = &Item{
-			value: i,
-		}
-		cur = cur.next
-	}
-
-	RevertLinkList(&list)
-
-	for head := list.sentinel.next;head != nil; head = head.next {
-		println(head.value)
-	}
 }
