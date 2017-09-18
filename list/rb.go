@@ -41,8 +41,8 @@ func (b *RingBuffer) Read(p []byte) (n int, err error) {
 
 		b.start = (b.start + l) % b.capacity
 
-		b.length -= l
 		n += l
+		b.length -= l
 	}
 
 	return n, nil
@@ -53,11 +53,10 @@ func (b *RingBuffer) Write(p []byte) (n int, err error) {
 		return n, ErrOutOfRange
 	}
 
-	for len(p) > 0 {
-		l := copy(b.data[b.end:], p)
+	for n < len(p) {
+		l := copy(b.data[b.end:], p[n:])
 
 		b.end = (b.end + l) % b.capacity
-		p = p[l:]
 
 		n += l
 		b.length += l
