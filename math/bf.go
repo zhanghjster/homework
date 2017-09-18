@@ -6,14 +6,7 @@ func BruteForce(d, s string) int {
 	}
 
 	for i := 0; i <= len(d) - len(s); i++ {
-		var j = 0
-		for ;j<len(s); j++ {
-			if d[i+j] != s[j] {
-				break
-			}
-		}
-
-		if j == len(s) {
+		if d[i:i+len(s)] == s {
 			return i
 		}
 	}

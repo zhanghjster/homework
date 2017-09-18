@@ -18,17 +18,24 @@ func IsPrimitive(n uint64) bool {
 	return true
 }
 
-func FindAllPrimitive(n uint64) []uint64 {
+// https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes
+func EratosthenesSieve(n uint64) []uint64 {
 	var numbers = make([]bool, n+1)
 
-	// mark all numbers primitive
-	for i := uint64(2); i <= n; i++ {
-		numbers[i] = true
+	// create a list of consecutive integer from 2 to n
+	// 创建一个从2到n的连续整数集合
+	for p := uint64(2); p <= n; p++ {
+		numbers[p] = true
 	}
 
-	for i := uint64(2); i*i <= n; i++ {
-		if numbers[i] {
-			for j := 2*i; j<=n; j += i {
+	// initially, let p equal 2, the smallest primitive number
+	// repeat the enumeration from 2 to square root of p
+	// 重复遍历2到p的平方根次
+	for p := uint64(2); p*p <= n; p++ {
+		if numbers[p] {
+			// enumerate the multiples of p from 2p to n in increment by p and mark them
+			// 遍历所有p的倍数并标记
+			for j := 2* p; j<=n; j += p {
 				numbers[j] = false
 			}
 		}
