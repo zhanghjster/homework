@@ -1,4 +1,20 @@
-package list
+### 简述
+
+环形缓冲区(ring buffer), 又称圆形队列（circular queue), 循环缓冲区(cyclic buffer), 圆形缓冲区(circular buffer)。
+
+它适合于实现明确大小的FIFO缓冲区，通常由一个数组实现，start和end两个索引来表示数据的开始和结束，length表示当前元素个数，capacity表示缓冲区容量。当有元素删除或插入时只需要移动start和end，其他元素不需要移动存储位置。
+
+### 工作过程
+
+缓冲区数据结构为一个capacity长度的数组，初始start、end、length为0
+
+* 有新元素插入时，插入到end索引的位置，end后移，length增加，当end在超过数组的最大索引时，end为0，当length等于capacity时表示缓冲区满
+* 读取元素时，从start开始读取，start增加，length减少，当start超过数组索引最大值时，start为0,当length为0是表示已经全部读出
+
+### 代码
+
+```
+package ringBuffer
 
 import (
 	"github.com/pkg/errors"
@@ -6,7 +22,7 @@ import (
 )
 
 var (
-	ErrFull = errors.New("cache if full")
+	ErrFull = errors.New("cache is full")
 )
 
 // Ring Buffer implemented by array, no overwriting
@@ -18,7 +34,7 @@ type RingBuffer struct {
 	capacity int
 }
 
-func NewRingBuffer(capacity int) *RingBuffer {
+func New(capacity int) *RingBuffer {
 	rb := &RingBuffer{
 		data:     make([]byte, capacity),
 		capacity: capacity,
@@ -91,3 +107,6 @@ func (b *RingBuffer) End() int {
 func (b *RingBuffer) Reset() {
 	b.length, b.end, b.start = 0, 0, 0
 }
+
+```
+
