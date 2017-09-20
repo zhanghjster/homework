@@ -1,6 +1,5 @@
 package math
 
-<<<<<<< HEAD
 //import "strconv"
 /*
 func RunLengthEncoding(s string) (res []byte, err error) {
@@ -18,10 +17,5 @@ func RunLengthEncoding(s string) (res []byte, err error) {
 			n++
 		}
 	}
-=======
-func RunLengthEncoding(s string) (res []byte, err error) {
->>>>>>> 4ab8eda7bacc19f50aa7eec16df9b3c66a057725
-
-	return
 }
 */

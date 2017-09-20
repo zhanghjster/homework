@@ -1,3 +1,9 @@
+---
+title: pow
+date: 2017-09-20 09:32:48
+tags:
+---
+
 #### 
 
 在看Golang的strings库的strings.Index(s, sep string)函数时时发现了一个计算n的m次幂的方法。代码如下：
@@ -16,6 +22,8 @@ func hashStr(sep string) (uint32, uint32) {
 }
 ````
 发现它并不是简单的m次n的乘积得到，其中必有一些技巧的存在。
+
+<!--more-->
 
 #### left-to-right Exponentiation
 
@@ -48,6 +56,20 @@ func hashStr(sep string) (uint32, uint32) {
 ````
 
 开头的golang代码就是这个算法的实现。与left-to-right比较实现起来很容易，不需要额外的空间存储指令。
+
+```
+func pow(m, n int) int {
+	var res int = 1
+	for i := n; n > 0; n >>= 1 {
+		if i&1 != 0 {
+			res *= m
+		}
+		m *= m
+	}
+	
+	return res
+}
+```
 
 
 #### 参考：
