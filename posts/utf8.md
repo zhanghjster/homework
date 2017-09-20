@@ -112,7 +112,7 @@ func main() {
 		fmt.Printf("%d %#U\n", i, v)
 	}
 
-	// 每次只遍历出一个字符
+	// 每次只遍历一个byte
 	for i :=0; i< len(sample); i++ {
 		fmt.Printf("%d, % x\n", i, sample[i])
 	}

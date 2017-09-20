@@ -1,28 +1,19 @@
 package main
 
 import (
+	"net/url"
+	"log"
 	"fmt"
 )
 
 func main() {
-	var sample = "a中文"
-	for i, v := range sample {
-		fmt.Printf("%d %#U\n", i, v)
+	var query = "a=1&b=2"
+	es := url.QueryEscape(query)
+	fmt.Printf("%s encoded to %s\n", query, es)
+
+	us, err := url.QueryUnescape(es)
+	if err != nil {
+		log.Fatal(err)
 	}
-
-	for i :=0; i< len(sample); i++ {
-		fmt.Printf("%d, % x\n", i, sample[i])
-	}
-
-
-	// right to left pow
-	var b, n, p = 3, 3, 1
-	for ; n > 0; n >>=1 {
-		if n&1 == 1 {
-			p *= b
-		}
-		b *=b
-	}
-
-	println(p)
+	fmt.Printf("%s decoded to %s\n", es, us)
 }

@@ -1,10 +1,9 @@
 ---
-title: pow
+title: Power
 date: 2017-09-20 09:32:48
 tags:
 ---
 
-#### 
 
 在看Golang的strings库的strings.Index(s, sep string)函数时时发现了一个计算n的m次幂的方法。代码如下：
 

@@ -103,7 +103,7 @@ func main() {
 	// f: 4字节 + 4字节padding
 	// i: 8 字节
 	// c: 1字节 + 7 字节padding
-	// c的尾部padding的原因是要保证是结构体自身也是8bit对齐的
+	// c的尾部padding的原因是要保证是结构体自身也是对齐的
 	// 因为这样可以确保实现结构体数组时候里面每个元素也是对齐的
 	fmt.Printf("size of D = %d\n", unsafe.Sizeof(d))
 
