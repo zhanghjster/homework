@@ -15,5 +15,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	fmt.Printf("%s decoded to %s\n", es, us)
 }
