@@ -1,5 +1,5 @@
 ---
-title: service discovery and registration
+title: Consul
 date: 2017-09-21 09:57:29
 tags:
 ---
