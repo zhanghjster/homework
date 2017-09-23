@@ -5,63 +5,54 @@ tags:
 	- distributed consensus
 ---
 
-对于单节点的系统来说，保存一个数据并保持他的完整性是非常容易的。但对于多个节点来说，就会遇到分布式一致性问题，数据在不同的节点上保存的值可能不同，这就需要算法实现保证数据一致性，Paxo和Raft便是这样的算法。
+对于单台服务器的系统来说，保存一条数据并保持它的完整性是非常容易的。但对于多个服务器组成的集群，就会遇到分布式一致性问题，数据在不同的节点上保存的值可能不同，这就需要算法实现保证数据一致性，Paxos和Raft便是这样的算法。
 
-共识通常出现在复制状态机的上下环境中，它是构建容错系统的一般方法。每个server都有一个状态机和一个日志。状态机就是我们要进行容错的组件，比如hash table。 对于client来说他正在与一个唯一的可靠的状态机进行交互，即便有部分服务器出现故障。 每个状态机从log中拿到更新数据的指令，比如hash table可能就是设置一个key的‘x'的值为3。一致性算法的目的就是要让server中log保持一致，对于任意的状态机如果第n个命令是将hash table的x设置为3，没有其他的状态机的第n个命令是将x设置为其他值，这样做就使每个状态机处理相同的命令序列，产生相同的一些列结果并达到相同的状态
+Paxos曾经是一致性算法的标杆，大多数算法都基于它或者受它的影响，但它难于理解，在实际应用中难于实现
 
-Raft是基于Paxo的一致性算法，它在容错和性能上与Paxo相当，但它比Paxo更容易理解和实现（没有多少人能够理解Paxo，即便是Raft的作者团队前后用了一年时间才理解。Raft实现一致性算法的方法是首先选出一个唯一的leader,  然后由leader负责管理日志复制，leader负责从client哪里接收日志单元然后复制给其他server，并且告诉server是否能够把日志单元保存到状态机里。这种办法简化了日志的管理。这样Raft将一致性问题分解为三个问题 Leader election、log replication和Safty
+Raft是人们经过Paxos痛苦的折磨后设计出的一个更好的一致性算法，它在容错和性能上与Paxos相当，但比Paxos更容易理解和实现
 
-#### Raft Basic
+#### 一致性(consensus)
 
-一个Raft集群典型情况下有5个server，这样可以容忍两个server出现故障。server的状态可以为follower、cadidate或者leader。通常的情况下，只会存在一个leader，其余均为follower。follower不产生请求，只回应来自leader和candidate的请求。leader负责将处理来自client的所有请求（如果client是将请求发给follower，则follower需要将转发给leader。cadidate则是leader election过程的中间状态。
+一致性是分布式系统容错要解决的一个根本性问题，它要求集群中的多数server对数据的正确与否形成共识。典型的一致性算法要求在集群中大多数(过半)服务器可用时才会认为系统可用，比如一个5台server的集群在2台故障的情况下任然会被认为可靠，可以继续提供服务，但超过2台则停止服务
+
+[复制状态机](https://www.cs.cornell.edu/fbs/publications/SMSurvey.pdf)是一致性算法产生的背景，它是集群容错的关键要素。在一个集群中每个server都有一个状态机和一个日志。状态机就是要进行容错的组件，比如hash table。 对于client来说他正在与一个唯一的可靠的状态机进行交互，即便有部分服务器出现故障。 每个状态机从log中拿到更新数据的指令，比如hash table可能就是设置一个key的‘x'的值为3。一致性算法的目的就是要让server中log保持一致，对于任意的状态机如果第n个命令是将hash table的x设置为3，没有其他的状态机的第n个命令是将x设置为其他值，这样做就使每个状态机处理相同的命令序列，产生相同的一些列结果并达到相同的状态。简单描述就是一致性算法要每台server上的状态机拿到相同顺序的指令以达到相同的状态结果的目的, 下图是复制状态机的架构图：
+
+![复制状态机](http://owo5nif4b.bkt.clouddn.com/statemachine.png)
+
+#### Raft
+
+Raft通过leader这个角色来实现一致性，集群需要选出leader，然后由它来管理日志，包括从client端获取日志，向其他server复制日志，确认日志在大多数server保存后通知server将日志同步到他们的状态机。
+
+通过建立leader这个角色，Raft将一致性问题分解为下面三个问题:
+
+* 选主(Leader election): 集群需要在server中选出一个leader
+* 日志复制(Log replication): leader必须从client端接受日志并复制到集群中，并强制要求其他服务器的日志保持和自己相同
+* 安全性(Safty): 如果一个服务器已经将给定索引位置的日志条目应用到本机状态机中，则所有其他服务器在该索引位置必须具有相同的条目
+
+##### Basic
+
+一个Raft集群典型情况下有5台server，系统可以容忍两个server出现故障依然保持正常工作。server的状态分为为leader、follower、cadidate三种。正常的情况下，集群只存在一个leader，其余均为follower。follower是被动的不会产生任何请求，只回应来自leader和candidate的请求。leader负责将处理来自client的所有请求（如果client是将请求发给follower，则follower需要将转发给leader)。cadidate则是leader election过程的中间状态。
 
 server在三种状态下的转化过程如下图:
 
-[server状态变化图]()
+![server状态变化图](http://owo5nif4b.bkt.clouddn.com/serverstatesandrpc.png)
 
-Raft将时间按照‘terms'来分开，用连续性数字ID来表示。每个term从一次选举开始，如果一个cadidate赢得选举后，他将在这个term内一直扮演leader的角色。在有些时候，选举过程会出现分裂(多个candidate), 这种情况下term会以选举无效结束，等待下一term开始。Raft保证在同一时间最多只能有一个leader。
+Raft将时间按照任期(terms)来分开，用连续性数字ID来表示。每个term从一次选举开始，如果一个cadidate赢得选举后，他将在这个term内一直扮演leader的角色。在有些时候，选举过程会出现分裂(多个candidate), 这种情况下term会以选举无效结束，等待下一term开始。Raft保证在同一时间最多只能有一个leader
 
-每个server保存了他当前得到的term id,当与其他server(leader或candidate)交互时，会比较其他server的term id，更新为大的值，如果一个candidate或者leader发现自己的term id比其他server的小，则自动降级为follower(server之间交互的信息都带有term id)。
+时间按照terms分开后如下图：
 
-server之间通过RPC协议进行交互，协议的负载只有RequestVoete和AppendEntries两种，参数如下
-	
-```
-RequestVote:
-	Arguments {
-		term   			# candidate's term
-		candidateId 	# candidate requesting vote
-		lastLogIndex	# index of candidate's last log entry
-		lastLogTerm		# term of candidate's last lot entry
-	}
-	
-	Result {
-		term			# currentTerm, for candidate to update itself
-		voteGranted		# true means candidate received vote
-	}
-	
-	Receiver implementation:		1. Reply false if term < currentTerm 		2. If votedFor is null or candidateId, and candidate’s log is atleast as up-to-date as receiver’s log, grant vote
-	
-	
-AppendEntries:
-	Arguments {
-		term 			# leader's item
-		leaderId		# follower use it to redirect clients
-		prevLogIndex	# index of log entry immediately preceding new ones
-		preLogTerm		# term of prevLogIndex entry
-		entries[]		# log entries to store(empty for heartbeat)
-		leaderCommit	# leader's commitIndex
-	}
-	
-	Result {
-		term			# current term, for leader to update itself
-		success			# true if follower container entry matching prevLogIndex and prevLogItem
-	}
-	
-```
+![terms](http://owo5nif4b.bkt.clouddn.com/terms.png)
 
-#### Leader Election
+每个server保存了他当前得到的term id，当与其他server(leader或candidate)交互时，会比较其他server的term id，更新为大的值，如果一个candidate或者leader发现自己的term id比其他server的小，则自动降级为follower(server之间交互的信息都带有term id)。
 
-Raft 用心跳机制来出发leader election。共有election timeout和heartbeat timeout两个超时。server的状态变化如下步骤:
+server之间通过RPC协议进行交互，协议的负载只有RequestVoete和AppendEntries两种，参数如下图：
+![vote](http://owo5nif4b.bkt.clouddn.com/vote.png)
+
+![request](http://owo5nif4b.bkt.clouddn.com/request.png)
+
+##### 选主Leader Election)
+
+Raft 用心跳机制来触发leader election。共有election timeout和heartbeat timeout两个超时。选主过程与状态变化如下步骤:
 
 1. 所有server的初始状态是follwer, 在此状态下有个超时计时election timeout, 一般为150ms-300ms
 2. 如果在election timeout内收到来自leader的心跳，election timeout就重置, 否则server将自己的term id增加并转换为cadidate状态
@@ -71,6 +62,7 @@ Raft 用心跳机制来出发leader election。共有election timeout和heartbea
 6. follower收到心跳消息后要重置election timeout和更新转矩周期，然后发送回复信息给leader，周而复始，一直到follower不再收到heartbeat变成dadidate
 7. 当leader收到新的投票周期大于自己当前周期的投票请求或者心跳消息，自动降级为follower
 
+![选主](http://owo5nif4b.bkt.clouddn.com/leaderelection.png)
 
 一个server在candidate状态下会遇到三种情况：
  
