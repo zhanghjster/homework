@@ -2,12 +2,15 @@
 title: Power
 date: 2017-09-20 09:32:48
 tags:
+	- exponetiation
+categeries:
+	- 算法
 ---
 
 
 在看Golang的strings库的strings.Index(s, sep string)函数时时发现了一个计算n的m次幂的方法。代码如下：
 
-````
+````go
 func hashStr(sep string) (uint32, uint32) {
 	....
 	var pow, sq uint32 = 1, primeRK
@@ -24,7 +27,7 @@ func hashStr(sep string) (uint32, uint32) {
 
 <!--more-->
 
-#### left-to-right Exponentiation
+#### Left-to-Right Exponentiation
 
 这是一个很古老的办法，具体逻辑是这样，比如：要求解x^25:
 
@@ -36,7 +39,7 @@ func hashStr(sep string) (uint32, uint32) {
 这个办法存在一个问题就是需要先计算出从左到右的指令集，并需要一定的空间保存。程序上实现有一定的复杂度。 这个办法也叫 Addition Chain Exponetiation
 
 
-#### right-to-left Exponetiation
+#### Right-to-Left Exponetiation
 
 这个算法也比较古老，实现方法如下,
 
@@ -54,19 +57,21 @@ func hashStr(sep string) (uint32, uint32) {
 	}
 ````
 
-开头的golang代码就是这个算法的实现。与left-to-right比较实现起来很容易，不需要额外的空间存储指令。
+开头的golang代码就是这个算法的实现,与left-to-right比较实现起来很容易,不需要额外的空间存储指令。
 
-```
+```go
 func pow(m, n int) int {
-	var res int = 1
-	for i := n; n > 0; n >>= 1 {
-		if i&1 != 0 {
-			res *= m
+	var ret int = 1
+	for n > 0 {
+		if n&1 != 0 {
+			ret *= m
 		}
+		
 		m *= m
+		n >>= 1
 	}
 	
-	return res
+	return ret
 }
 ```
 

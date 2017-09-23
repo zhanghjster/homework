@@ -9,8 +9,6 @@ categories:
 	- struct and algrithm
 ---
 
-### 简述
-
 环形缓冲区(ring buffer), 又称圆形队列（circular queue), 循环缓冲区(cyclic buffer), 圆形缓冲区(circular buffer)。
 
 它适合于实现明确大小的FIFO缓冲区，通常由一个数组实现，start和end两个索引来表示数据的开始和结束，length表示当前元素个数，capacity表示缓冲区容量。当有元素删除或插入时只需要移动start和end，其他元素不需要移动存储位置。
@@ -26,7 +24,7 @@ categories:
 
 ### 代码
 
-```
+```go
 package ringBuffer
 
 import (
