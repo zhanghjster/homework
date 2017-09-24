@@ -23,7 +23,7 @@ tags:
 ### etcd
 
 etcd是通过HTTP协议访问的k/v存储系统，采用集群架构，容易部署和使用。但他更多功能是提供存储，要实现服务发现还得配合一些第三方的应用或者自己实现。
-	
+​	
 * “registrator”, 自动注册工具，将服务提供方的信息存储到etcd, consul这种kv存储系统
 * ”confd“，轻量级的配置管理工具，他可以从etcd里取最新的服务信息生成配置文件，服务使用方就可以用它来实时更新配置文件 
 
@@ -31,20 +31,9 @@ etcd是通过HTTP协议访问的k/v存储系统，采用集群架构，容易部
 
 Consul 提供了高可用的kv存储，集群架构，这点和etcd zookeeper类似。 另外也提供了自动服务发现注册的套件，并且能否对服务进行健康检查。 结合consul-template可以实现服务提供方信息更新(比如增加了API服务器)时，自动生成配置文件给服务使用方自动更新配置。
 
-#### 概念
+##### 架构图
 
-1. Agent, 在集群的每个node上运行的后台程序。运行’consul agent‘启动，运行在‘client’或者‘server’模式下。所有的agent可以运行DNS或HTTP接口并且负责检查和同步服务。
-2. Client, 运行在client模式下的Agent，负责将所有的RPC请求转发到Server。Client是相对无状态的，他唯一的后台活动是LAN gossip池，只占用有限的资源。
-3. Server，运行在server模式下的client。任务包括维护集群状态、处理RPC请求、与其他datacenter交换WAN信息、转发查询到leader或远程数据中心等。
-4. Consensus(共识), 通过选主达成的协议。
-5. Gossip，node之间通过UDP交流所使用的协议
-6. LAN Gossip，一个数据中心里同一个本地网络里的node组成的池
-7. WAN Gossip，数据中心与外界交互的node。
-
-
-#### 架构图
-
-![图片](https://www.consul.io/assets/images/consul-arch-420ce04a.png)
+<img src="https://www.consul.io/assets/images/consul-arch-420ce04a.png" width="400">
 
 首先从图中可看到的是consul是支持跨数据中心的，在每个数据中心有client和server。一般server是3-5个，少了会影响可靠性，多了会影响速度。client则没有数量的限制。
 
@@ -54,25 +43,11 @@ Consul 提供了高可用的kv存储，集群架构，这点和etcd zookeeper类
 
 server还负责与其他数据中心交互来处理跨数据中心的请求，当server收到这种请求它会将请求转发到相应的数据中心活本地的leader。
 
-#### Consensus Protocol（共识协议）
+#### Raft in Consul
 
-Consul使用[共识协议](https://en.wikipedia.org/wiki/Consensus_(computer_science))实现[一致性](https://en.wikipedia.org/wiki/CAP_theorem)(Consistency)，这个协议是基于Raft算法实现，[这里](http://thesecretlivesofdata.com/raft/)有Raft的动画演示。
+Consul使用Raft算法实现分布式存储的一致性，在consul集群里，只有server结点参与了Raft，所有的client结点将请求转发给server，原因是Raft集群的结点数量不能太多(在3-5)， 如果client也参与到Raft，那么随着集群结点数量增加，在Raft算法下集群效率会下降
 
-##### Raft算法
-
-Raft是基于[Paxos](https://en.wikipedia.org/wiki/Paxos_%28computer_science%29)的一个共识算法。与Paxos相比，Raft具有更少的状态以及简单易懂的算法。
-
-这里有一些在讨论Raft时候用到的关键词：
-
- * Log - Raft系统的主要工作单元是日志条目。一致性问题被分解成日志条目的复制问题。日志是条目的有序序列，如果所有的成员对日志条目内容和顺序都认可，则我们认为日志是一致的
- * FSM - [有限状态机](https://en.wikipedia.org/wiki/Finite-state_machine)(Finite State Machine). 一个FSM是他们之间具有过度的有限状态所组成的集合。当心的日志被应用时，FSM允许在状态件过度。具有相同日志顺序的应用必须具有相同的状态，即，行为必须具有确定性。
- * Peer set - 参与日志复制的所有成员的集合。对于consul，所有的node都在本地数据中心的peer set里。
- * Quorum - peer set里的一些主要成员组成的集合。如果一个peer set的大小是你n，则quorum至少要(n/2)+1. 如果所有node的quorum是无效的，则集群变成无效的，不会再有新的log被提交
- * Committed Entry - 当一个条目被持久存储到结点的Quorom nodes里时，条目被认为被提交了，进而才可以被应用
- * Leader - 在任何时间，peer set会选出一个node作为leader，负责提取新的log条目，复制条目到‘follower’。
-
- 
- 。。。。。。
+在一开始，单结点的Consule serveri进入到“bootstrap”模式，server自动升级为leader,之后其他server可以安全的一致性的加入到成员列表里。最终当新server数量增加到指定数量时“boostrap”模式结束。
 
 参考：
 
