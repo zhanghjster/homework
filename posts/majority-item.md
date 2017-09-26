@@ -18,7 +18,7 @@ tags:
 func FindMajority(items []int) int {
 	var count = 1
 	var item = items[0]
-	for _, v := range items {
+  	for _, v := range items[1:] {
 		if v == item {
 			count++
 		} else {

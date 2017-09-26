@@ -1,4 +1,4 @@
-package math
+package algrithm
 
 // 一个数组里有个元素重复次数超过半数，要求算法找出这个元素
 // 时间复杂度在o(n),空间复杂度o(1)

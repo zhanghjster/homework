@@ -1,4 +1,4 @@
-package math
+package algrithm
 
 
 func FibDesc(n int) int64 {

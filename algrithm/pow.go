@@ -1,4 +1,4 @@
-package math
+package algrithm
 
 /*
  * right-to-left binary exponentiation

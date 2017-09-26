@@ -1,4 +1,4 @@
-package math
+package algrithm
 
 func BruteForce(d, s string) int {
 	if len(d) < len(s) {

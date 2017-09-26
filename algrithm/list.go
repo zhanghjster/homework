@@ -1,4 +1,4 @@
-package math
+package algrithm
 
 type Item struct {
 	next *Item
