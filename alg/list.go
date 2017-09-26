@@ -1,4 +1,4 @@
-package algrithm
+package alg
 
 type Item struct {
 	next *Item

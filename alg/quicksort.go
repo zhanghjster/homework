@@ -1,4 +1,4 @@
-package algrithm
+package alg
 
 func QuickSort(a []int) {
 	if len(a) > 1 {

@@ -1,4 +1,4 @@
-package algrithm
+package alg
 
 import "testing"
 
