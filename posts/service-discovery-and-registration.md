@@ -49,23 +49,22 @@ Consul使用Raft算法实现分布式存储的一致性，在consul集群里，�
 
 在一开始，单结点的Consule serveri进入到“bootstrap”模式，server自动升级为leader,之后其他server可以安全的一致性的加入到成员列表里。最终当新server数量增加到指定数量时“boostrap”模式结束。
 
+Raft集群的启动方式：
 
+一种直接的办法是用个配置文件记录所有server的列表，每个server启动后用这个静态的列表作为Raft的server，但这需要所有server维护一个静态的配置文件，比如下面的一个YAML格式内容：
 
-如何Raft集群？一种办法是每个server上都有个配置文件记录所有server的列表，当server启动后进入Raft逻辑时server列表是已知并且固定的，但这要维护一个静态的配置文件。
-
-比如下面的这样的servers.conf:
+```YAML
 servers:
 	- "192.168.1.11:11011"
 	- "192.168.1.12:11011"
 	- "192.168.1.13:11011"
-
-有没有办法去掉这个配置文件呢? 让server启动时自动的维护Raft的server列表？
-
-'-bootstrap'参数，如果集群先启动一个server并且他优先做为leader(通过手段，之后加入的所有server在Raft的算法下一直是follower(因为server的配置里只有自己，是无法完成选主的，一直处于follower的状态)
-
 ```
 
-```
+另外可以让server启动时自动的维护Raft的server列表，这需要避免多个split-brain(双主)的情况
+
+'-bootstrap'参数，如果集群先启动一个server并且他优先成为leader(Consul在这里做了特殊设置，让这个bootstrap server从log中恢复成leader状态)，之后加入的所有server一直是follower状态。但这还有个问题，就是还是得固定一台server成为第一个leader，启动参数必须与其他server不同(必须带有-bootstrap'。'-bootstrap-expect'参数则避免了这个配置，所有server都用一个参数 '-boostrap-expect N'说明集群的server个数为N，在有N个server join进来后，cluster开始启动raft逻辑选主。注意，N一定要与server总数相同，否则会出现split-brain问题，比如N=3 儿集群server总数为7，就很可能出现两个leader的情况。
+
+
 
 
 
