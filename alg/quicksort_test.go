@@ -7,7 +7,7 @@ import (
 
 func TestQuickSort(t *testing.T) {
 	var a = []int{9,4,1,5,2,8,7,3,5}
-	QuickSort(a)
+	HoareQuickSort(a)
 	for i, v := range a {
 		fmt.Println(i, v)
 	}
