@@ -65,12 +65,216 @@ servers:
 '-bootstrap'参数，如果集群先启动一个server并且他优先成为leader(Consul在这里做了特殊设置，让这个bootstrap server从log中恢复成leader状态)，之后加入的所有server一直是follower状态。但这还有个问题，就是还是得固定一台server成为第一个leader，启动参数必须与其他server不同(必须带有-bootstrap'。'-bootstrap-expect'参数则避免了这个配置，所有server都用一个参数 '-boostrap-expect N'说明集群的server个数为N，在有N个server join进来后，cluster开始启动raft逻辑选主。注意，N一定要与server总数相同，否则会出现split-brain问题，比如N=3 儿集群server总数为7，就很可能出现两个leader的情况。
 
 
+#### 检查(checks)
 
+Agent的一个重要任务是做系统级和程序级的健康检测，检测通过配置文件或HTTP接口来定义并被保存到Agent所运行的节点
 
+检查的类型
 
+* 定时脚本检查(script+Interval), 调用一个第三方的程序进行健康检测，使用退出码或标准输出来表明检测结果(类似Nagios), 输出内容不能超过4K，默认的检查超时时间是30秒，可以通过配置文件里的"timeout"来定义。Agent使用enable_script_checks参数来打开这种检查
+	
+	脚本退出码与检测结果对应关系：
+	* 0, passing
+	* 1, warning
+	* other, failing
+	
+	脚本的任何输出内容会被保存到消息的‘Output’字段， Agent启动后，
+* 定时HTTP检查(HTTP+Interval), 定时通过HTTP GET调用指定的URL，根绝HTTP返回码判断服务状态。‘2xx’表示通过检查，‘429’表示警告，其余均表示故障。默认情况下http请求的timeout与检查的interval相同，最长为10秒。可以通过‘timeout'来在配置文件里设置。检查返回的内容大小不能超过4K，超过部分会被截断。默认情况下支持SSL，可以通过tls_skip_verify来关掉。
+* 定时TCP检查(TCP+Interval), 定时通过TCP连接检查指定host/IP和端口，根据是否能够建立连接成功与否判定service状态，成功连接表示service正常，否则表示事态危急. 默认超时时间10秒。
+* TTL检查，通过服务主动的定时更新TTL，超过时间的定位service故障。
+* 定时Docker检查，通过调用常驻docker里的一个检查程序来进行，这个程序通过调用Docker Exec API来启动，需要consul agent具有调用Docker HTTP API或Unix Socket的权限。consul用 DOCKER_HOST 来定位Docker API端点，检查程序运行完后要返回适当的退出码和输出，输出内容不能超过4K。Agent需要通过enable_script_check来打开这种检查
 
+默认会将check的状态设置为‘critical’，这是防止服务在没有被检查前就被加入到调用这个服务的系统里,下面是一个check的配置项例子：
+	
+```
+{
+	 "check": {
+	    "id": "redis check",
+	    "script": "/usr/local/bin/check_redis.pl",
+	    "interval":"5s",
+	    "status":"passing"
+	    "service_id": "redis" # 检查绑定到指定的service，只会影响指定service
+	}
+}
+```
+	
+多个检查用数组表示
+	
+```
+{
+	"checks": [
+		{
+			"id": "redis check",
+			"script": "/usr/local/bin/check_redis.pl",
+			"interval":"5s",
+			"service_id": "redis",
+			"status":"critial"
+		},
+		{
+			"id": "ssh",
+			"name": "ssh port check",
+			"tcp": "benx:22",
+			"interval": "10s",
+			"timeout": "5s"
+		}
+	]
+}
+```
 
+下面是监控上文的‘checks’的例子，
 
+#### 监视(Watch)
+
+使用Whach可以监视KV、nodes、service、checks等对象的变化，当有更新时会触发watch定义的可执行的handler。
+
+Watch通过阻塞的HTTP API实现，Agent会根据调用相应api请求自动监视指定内容，当有变化时通知handler
+
+Watch还可以加入到Agent的配置文件中的watches生成，下面是Agent配置文件的内容
+
+```
+{
+  "watches": [
+      {
+		  "type": "key",
+		  "key": "foo/bar",
+		  "handler": "/usr/bin/my-watch-handler.pl"
+		}
+   ]
+}
+
+```
+
+watch还可以通过‘consule watch’命令来直接运行并把结果输出到处理程序
+
+当watch监控到数据的更新，可以调用一个handler还做后续处理，watch会将监控的结果以JSON格式发送给handler的标准输入(stdin), watch不同的对象结果的格式会不同
+
+watch的类型：
+
+ * key
+ * keprefix
+ * services
+ * nodes
+ * service
+ * checks
+ * event
+
+下面是监控key"foo/bar"的例子，用脚本/opt/consul/script/kw.pl为handler，它会将watch传给他的内容打印
+
+保存"foo/bar"后启动watch, 他会先将kv的现有状态输出给handler
+
+```
+[root@node1 script]# consul kv put foo/bar 2
+[root@node1 script]# consul watch -type key -key foo/bar /opt/consul/script/kw.pl
+$VAR1 = {
+          'Value' => 'Mg==',
+          'LockIndex' => 0,
+          'CreateIndex' => 2640,
+          'Session' => '',
+          'Flags' => 0,
+          'ModifyIndex' => 2721,
+          'Key' => 'foo/bar'
+        };
+
+```
+
+更新"foo/bar"
+
+```
+[root@node4 consul.d]# consul kv put foo/bar 6
+Success! Data written to: foo/bar
+```
+
+“foo/bar"被更新后, watch输出了kv的新的状态给handler
+
+```
+[root@node1 script]# consul watch -type key -key foo/bar /opt/consul/script/kw.pl
+$VAR1 = {
+          'Value' => 'Mg==',
+          'LockIndex' => 0,
+          'CreateIndex' => 2640,
+          'Session' => '',
+          'Flags' => 0,
+          'ModifyIndex' => 2721,
+          'Key' => 'foo/bar'
+        };
+$VAR1 = {
+          'Value' => 'Ng==',
+          'LockIndex' => 0,
+          'CreateIndex' => 2640,
+          'Session' => '',
+          'Flags' => 0,
+          'ModifyIndex' => 2735,
+          'Key' => 'foo/bar'
+        };
+
+```
+
+下面是监控上文在配置文件里设置的‘redis‘这个service的check, handler将watch的结果输出， 命令行里如果不做service限制则监控所有checks
+
+````
+[root@node1 script]# consul watch -type checks -service redis /opt/consul/script/kw.pl
+$VAR1 = [
+          {
+            'Notes' => '',
+            'ServiceName' => 'redis',
+            'Status' => 'warning',
+            'ServiceID' => 'redis',
+            'Output' => 'OK',
+            'ServiceTags' => [
+                               'primary'
+                             ],
+            'CheckID' => 'redis check',
+            'Node' => 'node4',
+            'Name' => ''
+          }
+        ];
+
+````
+当前状态为warning, 以为此时check_redis.pl测试脚本退出码是1
+
+```
+[root@node4 consul.d]# cat /usr/local/bin/check_redis.pl 
+	#!/usr/bin/perl
+	use 5.010;
+	print 'OK';
+	exit(1);      
+```
+当把exit(1)改为exit(0)后， handler打印了新的check结果
+
+```
+[root@node1 script]# consul watch -type checks -service redis /opt/consul/script/kw.pl
+$VAR1 = [
+          {
+            'Notes' => '',
+            'ServiceName' => 'redis',
+            'Status' => 'warning',
+            'ServiceID' => 'redis',
+            'Output' => 'OK',
+            'ServiceTags' => [
+                               'primary'
+                             ],
+            'CheckID' => 'redis check',
+            'Node' => 'node4',
+            'Name' => ''
+          }
+        ];
+$VAR1 = [
+          {
+            'Notes' => '',
+            'ServiceName' => 'redis',
+            'Status' => 'passing',
+            'ServiceID' => 'redis',
+            'Output' => 'OK',
+            'ServiceTags' => [
+                               'primary'
+                             ],
+            'CheckID' => 'redis check',
+            'Node' => 'node4',
+            'Name' => ''
+          }
+        ];
+
+```
 
 参考：
 

@@ -80,3 +80,4 @@ https://en.wikipedia.org/wiki/Quicksort
 
 http://www.geeksforgeeks.org/quick-sort/
 
+https://www.khanacademy.org/computing/computer-science/algorithms/quick-sort/a/analysis-of-quicksort
