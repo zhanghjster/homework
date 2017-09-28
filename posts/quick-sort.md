@@ -1,15 +1,18 @@
 ---
-title: 快速排序
+title: QuickSort
 date: 2017-09-26 06:43:40
 tags:
     	- 算法
-	- 排序
-	- quicksort
+        - 排序
+        - quicksort
+        - 快速排序
 ---
 
  快速排序是一个分治法排序，由[Tony Hoare](https://en.wikipedia.org/wiki/Tony_Hoare)在20世纪50年代提出，到现在还依然普遍使用，如果实现的好可以比其合并排序、堆排序等竞争算法快二到三倍。一般情况下它的时间复杂度为 $O(nlogn)$  , 最坏情况下为$O(n^2)$
 
 算法的思想是取一个枢纽元“pivot”然后将数组元素以枢纽元为中心分割(partition)，递归执行。枢纽元可以从通过取第一个、取最后一个、随机、中位的办法从数组里取得。其中关分割是算法的关键，在这个过程里要将数组里所有小于pivot的数放到它的前面，大于pivot的数放到它的后面
+
+<!-- more -->
 
 递归调用的过程如下：
 
@@ -70,7 +73,7 @@ func LomutoPartition(a []int) int {
 
 #### Hoare partition scheme
 
-算法由Hoare提出，两个索引$i$和$j$ 分别从数组的数位开始相向而行，当$i$ 处元素大于pivot并且$j$处小于pivot，交换两处的值，然后两个索引继续前行， 直到互换位置，此时交换两个索引处的值
+算法由Hoare提出，两个索引$i$和$j$ 分别从数组的数位开始相向而行，当$i$处元素大于pivot并且$j$处小于pivot，交换两处的值，然后两个索引继续前行， 直到互换位置，此时交换两个索引处的值
 
 下面是一段用go实现代码，注释部分模拟了每一步的数组状态：
 
@@ -80,7 +83,7 @@ func LomutoPartition(a []int) int {
 // p = 8
 // for循环执行过程
 //   1. i = 0, j=7, a[0]<=>a[7], a = {5, 6, 3, 7, 2, 5, 9, 8}
-// 	 2. i = 1, j=5, a[1]<=>a[5], a = {5, 5, 3, 7, 2, 6, 9, 8}
+//   2. i = 1, j=5, a[1]<=>a[5], a = {5, 5, 3, 7, 2, 6, 9, 8}
 //   3. i = 3, j=4, a[3]<=>a[4], a = {5, 5, 3, 2, 7, 6, 9, 8}
 //   4. i = 4, j=3, return
 func HoarePartition(a []int) int {
@@ -105,9 +108,19 @@ func HoarePartition(a []int) int {
 }
 ```
 
+与Lomuto相比，对数组中相同元素很多甚至全部相同的情况处理更好，因为即便相同$i$ 和$j$也继续相向而行，分裂出的数组还尽可能的平衡，减少了递归树的高度，而Lomuto则无法处理这种情况
+
+#### 时间复杂度
+
+当数组里元素的大小尽可能的均衡，每次partition后生成的两个数组都是长度相等或仅相差1，时间复杂度为$O(nlogn)$，递归树如下图
+
+<img src="http://owo5nif4b.bkt.clouddn.com/tree2.jpg" width="400">
 
 
-​	
+
+ 当数组里元素为预排序的，每次partition后两个数组最不平衡，时间复杂度为$O(n^2)$, 递归树如下图
+
+<img src="http://owo5nif4b.bkt.clouddn.com/tree1.jpg" width="400">
 
 参考：
 

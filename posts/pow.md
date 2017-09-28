@@ -8,7 +8,7 @@ categeries:
 ---
 
 
-在看Golang的strings库的strings.Index(s, sep string)函数时时发现了一个计算n的m次幂的方法。代码如下：
+在看Golang的strings库的strings.Index(s, sep string)函数时时发现了一个计算 $n^m$ 的方法。代码如下：
 
 ````go
 func hashStr(sep string) (uint32, uint32) {
@@ -29,12 +29,12 @@ func hashStr(sep string) (uint32, uint32) {
 
 #### Left-to-Right Exponentiation
 
-这是一个很古老的办法，具体逻辑是这样，比如：要求解x^25:
+这是一个很古老的办法，具体逻辑是这样，比如：要计算$x^{25} $:
 
-   1. 首先将25用二进制表示 11001.
-   2. 去掉最高位的1， 变为 1001.
-   3. 用D(double)代表0， D1（double and +1）代表1。得到计算的指令 D1DDD1
-   4. 从左到右，按照上面得到的指令进行计算。顺序得到x^2,x^3,x^6,x^12,x^24,x25. 共执行了6次。
+      1. 首先将25用二进制表示 11001.
+      2. 去掉最高位的1， 变为 1001.
+      3. 用D(double)代表0， D1（double and +1）代表1。得到计算的指令 D1DDD1
+      4. 从左到右，按照上面得到的指令进行计算。顺序得到$x^2$,$x^3$,$x^6$,$x^{12}$,$x^{24}$,$x^{25}$. 共执行了6次。
 
 这个办法存在一个问题就是需要先计算出从左到右的指令集，并需要一定的空间保存。程序上实现有一定的复杂度。 这个办法也叫 Addition Chain Exponetiation
 
