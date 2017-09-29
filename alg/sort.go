@@ -2,8 +2,8 @@ package alg
 
 func LomutoQuickSort(a []int) {
 	if len(a) > 1 {
-		pi := HoarePartition(a)
-		LomutoQuickSort(a[:pi])
+		pi := LomutoPartition(a)
+		LomutoQuickSort(a[:pi-1])
 		LomutoQuickSort(a[pi+1:])
 	}
 }
