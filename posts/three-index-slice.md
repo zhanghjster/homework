@@ -52,7 +52,7 @@ func main() {
 	fmt.Printf("after append to slice: \tarray = %v\n", array)
 }
 
-benxYYTdeMac-mini:try ben$ go run try.go 
+$ go run try.go 
 cap(foo) => 6, cap(bar) => 4
 before append to bar:   foo = [0 1 2 3 4 5]
 after append to bar:    foo = [0 1 2 0 4 5]
