@@ -2,11 +2,11 @@
 title: Ring Buffer
 date: 2017-09-19 00:30:43
 tags: 
-	- ring buffer 
-	- circular buffer
-	- struct
+    - ring buffer 
+    - circular buffer
+    - go
 categories:
-	- struct and algrithm
+    - 数据结构
 ---
 
 环形缓冲区(ring buffer), 又称圆形队列（circular queue), 循环缓冲区(cyclic buffer), 圆形缓冲区(circular buffer)。
@@ -15,14 +15,14 @@ categories:
 
 <!-- more -->
 
-### 工作过程
+#### 工作过程
 
 缓冲区数据结构为一个capacity长度的数组，初始start、end、length为0
 
 * 有新元素插入时，插入到end索引的位置，end后移，length增加，当end在超过数组的最大索引时，end为0，当length等于capacity时表示缓冲区满
 * 读取元素时，从start开始读取，start增加，length减少，当start超过数组索引最大值时，start为0,当length为0是表示已经全部读出
 
-### 代码
+#### 代码
 
 ```go
 package ringBuffer

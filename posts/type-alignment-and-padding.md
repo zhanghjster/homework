@@ -2,13 +2,15 @@
 title: Type alignment and padding
 date: 2017-09-19 21:23:35
 tags: 
-	- struct 
-	- alignment 
-	- padding
+    - struct 
+    - alignment 
+    - padding
+categories: 
+    - 基础
 ---
-	
+
 现代计算机中，每种数据类型都需要进行对齐操作，这是处理器结构决定的，而不是语言。因为计算机从内存读写数据，是按照'字长'（数据总线宽度）为单位的，将数据的地址设置为'字长'的倍数可以增加CPU读取数据的效率
-	
+​	
 以32位机器的一个整数为例，CPU每次读取的数据长度是4，如果整数地址在4的倍数，比如 8 则一个读取周期能够完成。否则，如果在14，则需要读取两次。如果64位机器则需要为 8 的倍数
 
 <!--more-->
@@ -17,17 +19,17 @@ tags:
 
  * 数据类型自身对齐
 
- 	* int8 byte bool	1字节对齐
- 	* int16 			2字节对齐
- 	* int31 float32 	4字节对齐
- 	* int int64 		8字节对齐
-	* slice string	8字节对齐
+    * int8 byte bool	1字节对齐
+    * int16 		2字节对齐
+    * int31 float32 4字节对齐
+    * int int64         8字节对齐
+    * slice string    8字节对齐
 
  * 结构体自身对齐，其大小要被最宽基本类型成员大小整除
 
  * 结构体成员自身对齐
 
-	结构体padding的原则就是要保证#2 和 #3
+  结构体padding的原则就是要保证#2 和 #3
 
 #### Golang代码实验
 
@@ -138,7 +140,7 @@ offset of g.cc = 2
 ```
 
 #### 参考:
-	
+
 http://www.geeksforgeeks.org/structure-member-alignment-padding-and-data-packing/
 
 http://www.catb.org/esr/structure-packing/#_structure_alignment_and_padding

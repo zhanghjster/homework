@@ -2,8 +2,11 @@
 title: Percent Encoding
 date: 2017-09-20 10:22:44
 tags:
-	- encode
-	- decode
+    - encode
+    - decode
+    - go
+categories:
+    - 基础
 ---
 
 ‘百分号编码'是一种将URI编码的机制, 又叫URL编码。

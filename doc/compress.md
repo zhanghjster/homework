@@ -41,7 +41,7 @@ RLE 压缩算法是将数据中连续出现的重复'字符'用'字符'+'重复�
 
 
 
-
+http://www.stoimen.com/blog/2012/01/09/computer-algorithms-data-compression-with-run-length-encoding/
 
 
 

@@ -2,10 +2,10 @@
 title: Find majority item
 date: 2017-09-25 22:37:10
 tags:
-    - 算法
     - find majority
-    - algorithm
-    	
+    - go
+categories:
+    - 算法    	
 ---
 
 一次选美大赛，由N个评委投票来产生冠军，每个评委都将投票放到自己面前的小盒子里。在冠军的票数需要超过半数的情况下，实现算法从这N个小盒子里找出这个冠军。要求时间复杂度是$O(n)$，空间复杂度$O(1)$

@@ -2,7 +2,10 @@
 title: Raft
 date: 2017-09-22 09:42:29
 tags:
-	- distributed consensus
+    - distributed consensus
+    - 分布式一致
+categories:
+    - 算法
 ---
 
 对于单台服务器的系统来说，保存一条数据并保持它的完整性是非常容易的。但对于多个服务器组成的集群，就会遇到分布式一致性问题，数据在不同的节点上保存的值可能不同，这就需要算法实现保证数据一致性，Paxos和Raft便是这样的算法
