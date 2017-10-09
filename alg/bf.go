@@ -29,16 +29,3 @@ func BruteForce(t, p string) int {
 
 	return -1
 }
-
-func BruteForceOld(t, p string) int {
-	if len(t) < len(p) {
-		return -1
-	}
-
-	for i:=0; i <= len(t) - len(p); i++ {
-
-	}
-
-	return -1
-}
-

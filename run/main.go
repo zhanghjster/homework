@@ -6,38 +6,9 @@ import (
 )
 
 func main() {
-	var i int64 = (1 << 9) | (1 << 17)
-	fmt.Printf("%b\n", i)
-	println(int8(i >> 8))
-
-	var a uint8 = 10
-	var b uint8 = 5
-	fmt.Printf("%b,%b\n", a, b)
-	fmt.Printf("%b\n", a^b)
-	fmt.Printf("%b\n", a&^b)
-
-	var aa= []int{1, 2, 3, 4, 5, 6}
-	var bb= aa[1:5:5]
-	fmt.Printf("%v\n", bb)
-	p := unsafe.Pointer(uintptr(unsafe.Pointer(&bb[0])) + uintptr(4*unsafe.Sizeof(int(0))))
-	*(*int)(p) = 0
-	fmt.Printf("%v\n%v\n", aa, bb)
-
-	var slice= []int{1, 2, 3, 4, 5, 6}
-
-	InspectSlice(slice)
-
-	//InspectSlice(slice[2:3])
-
-	var newSlice = slice[2:4:4]
-
-	InspectSlice(newSlice)
-
-	//newSlice = append(newSlice, 1)
-
-	newnewSlice := newSlice[:2:3]
-
-	InspectSlice(newnewSlice)
+	//var j, k uint8 = 17, 18
+	//var q uint8 = 10
+	fmt.Println((-1)%10)
 }
 
 func InspectSlice(slice []int) {
