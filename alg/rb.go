@@ -7,7 +7,7 @@ func RabinKarp(t, p string) int {
 	}
 
 	var d  = 256 		// 基数
-	var q  = 101 	// 模
+	var q  = 7 	// 模
 
 	// h 为d^(m-1)
 	var h  = 1
@@ -28,16 +28,18 @@ func RabinKarp(t, p string) int {
 
 	// 滚动检查
 	for i:=1;i<=n-m;i++ {
-		println("ht =>", ht, " d => ", d, " h => ", h)
 		ht = (d*ht - int(t[i-1])*h + int(t[i+m-1]))%q
+		if ht < 0 {
+			ht += q
+		}
+
+		println("ht =>", ht, " d => ", d, " hp => ", hp)
 
 		// 找到潜在匹配后做字符串验证
 		if ht == hp && t[i:i+m] == p {
 			return i
 		}
-		if ht < 0 {
-			ht += q
-		}
+
 	}
 
 	// 对于串S[0..m], h = s[0]*d^(m-1)+s[1]*d^(m-2)+..+s[m-1]在d选择比较合适的素数的情况下，
