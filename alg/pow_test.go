@@ -1,8 +1,13 @@
 package alg
 
-import "testing"
+import (
+	"testing"
+	"github.com/stretchr/testify/assert"
+)
 
 func TestPow(t *testing.T) {
+	var n = Pow(2,3)
+	assert.Equal(t, n, 8)
 
 }
 

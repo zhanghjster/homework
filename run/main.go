@@ -3,12 +3,17 @@ package main
 import (
 	"fmt"
 	"unsafe"
+	"strings"
 )
 
 func main() {
 	//var j, k uint8 = 17, 18
-	//var q uint8 = 10
-	fmt.Println((-1)%10)
+	//var q uint8 =
+	strings.Contains()
+	var a uint8 = 1
+	var b uint8 = 2
+	fmt.Printf("%b\n", (a + (7 - b%7))%7 )
+	fmt.Printf("%d\n", (a - b)%7)
 }
 
 func InspectSlice(slice []int) {
