@@ -37,9 +37,6 @@ func RabinKarp(t, p string, d, q int) int {
 	// 滚动检查
 	for i:=0; i <= n-m; i++  {
 		// 找到潜在匹配后做字符串验证
-		fmt.Println(t[i:i+m])
-		fmt.Println("hp => ", hp, " ht => ", ht)
-		showp(t[i:i+m], d, q)
 		if ht == hp && t[i:i+m] == p {
 			return i
 		}
@@ -50,7 +47,7 @@ func RabinKarp(t, p string, d, q int) int {
 		// ht为负数时转化成与之同余的正数以便于与p进行比较
 		// 如果ht = (dt*ht + q - (int(t[i])*h)%q + int(t[i+m])%q)
 		// 就不需要下面转化，因为ht肯定为正数，但它效率不高
-		fmt.Println(ht)
+		//fmt.Println(ht)
 		if ht < 0 {
 			ht += q
 		}

@@ -112,23 +112,29 @@ $$\\ \begin{split} t_{s+1} = dt_s - T[s]d^m + T[s+m]\end{split}$$
 
 $$\\ t_{s+1} = (dt_s - T[s]d^m + T[s+m]) \mod q$$
 
+如果提前计算出$h_d = (d \mod q)^m$ 则有
+
+$$\\ t_{s+1} = (dt_s - T[s]h_d + T[s+m]) \mod q$$
+
 模式$P$的哈希值则为
 
 $$\\ p = (P[0]d^{m-1} + p[1]d^{m-2}+…+P[1]d+p[0]) \mod q$$
 
-还是以在"Hello from mars"中查找"mars"为例，$d$ 取256， $q$ 取103, 用字符的ASCII码作为字符的值
+以在"hello from mars"中查找"mars"为例，$d$ 取256， $q$ 取103, 用字符的ASCII码作为字符的值
 
-<img src="http://owo5nif4b.bkt.clouddn.com/lp8.png" width="400">
+<img src="http://owo5nif4b.bkt.clouddn.com/kp9.png" width="400">
 
-首先计算出模式$P$和文本$T[0..3]$的hash
+首先计算出模式$P$和文本$T[0..3]$的hash和$h_d$
 
 $$\\ p = (m\times256^3+a\times256^2+r\times256 + s)\%103 = 39 $$
 
 $$\\ t_0 = (h\times256^3+e\times256^2+l\times256+l)\%103=54$$
 
+$$\\ h_d = (256\%103)^4 = 63$$
+
 因为$p \neq t_0$，窗口右移
 
-$$\\ t_1 = (256\times t_0 - h\times 256^4 + o)\%103 = 70$$
+$$\\ t_1 = (256\times t_0 - h\times h_d + o)\%103 = 70$$
 
 $p\neq t_1$ ， 继续右移直至检测到 'mars'的hash与p相同
 
@@ -187,35 +193,33 @@ func RabinKarp(t, p string, d, q int) int {
 }
 ```
 
-
+未完......
 
 ##### 资料
 
 ###### 模运算性质
 
-$$\\(a + b) \mod q = (a \mod q + b \mod q) \mod q$$
+$$\\ (a + b) \mod q = (a \mod q + b \mod q) \mod q$$
 
-$$\\(a\times b) \mod q = ((a \mod q)\times(b\mod q))\mod q$$
+$$\\ (a\times b) \mod q = ((a \mod q)\times(b\mod q))\mod q$$
 
-$$\\(a + b) \mod q = (a + (b \mod q)) \mod q$$
+$$\\ (a + b) \mod q = (a + (b \mod q)) \mod q$$
 
-$$\\(a\times b)\mod q = (a \times  (b\mod q)) \mod q$$
+$$\\ (a\times b)\mod q = (a \times  (b\mod q)) \mod q$$
 
 ###### 不同类型整数同余
 
-假设，$n$位有符号整数$a, b, c, q$ ，其中$a < b$， 且有关系  $c \equiv (a - b) \mod q $， 那么它们是无符号整型时，这个同余关系还满足吗？
+假设，$n$位有符号整数$a, b, c, q$ ，其中$a < b$， 且有关系  $c \equiv (a - b) \mod q $， 那么它们是无符号整型时，这个同余关系还满足吗？答案是，看情况
 
-答案是看情况
+在有符号整数情况下 
 
-因为在有符号整数情况下 
+$$\\ (a - b) \mod q = (-(b-a)) \mod q $$
 
-$$\\(a - b) \mod q = (-(b-a)) \mod q $$
+在无符号整数情况下， $a < b$ 导致溢出使得 $a -b = 2^n - (b - a)$ 所以
 
-在有无符号整数情况下，因为 $a < b$ 导致溢出使得 $a -b = 2^n - (b - a)$ 所以
+$$\\ (a - b) \mod q = (2^n - (b - a)) \mod q$$
 
-$$\\(a - b) \mod q = (2^n - (b - a)) \mod q$$
-
-所以当 $2^n \mod q = 0$ 时，同于关系才会满足，否则不成立
+所以当 $2^n \mod q = 0$ 时，同余关系才会满足，否则不成立
 
 ```go
 package main
