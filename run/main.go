@@ -7,23 +7,56 @@ import (
 )
 
 func main() {
-	var a, b  = 234, 72
+	var a = intToList(1023)
+	var b = intToList(2)
 
-	var la, lb = list.New(), list.New()
-	for ;a > 0; a /= 10 {
-		la.PushFront(a%10)
-	}
-	for ;b >0; b /= 10 {
-		lb.PushFront(b%10)
-	}
+	var c = AddTwo(a, b)
+
+	printIntList(c)
 
 	// show a b
+	printIntList(a)
+	printIntList(b)
+}
 
-	for ha := la.Front(); ha!=nil; ha = ha.Next() {
+func AddTwo(l1, l2 *list.List) *list.List {
+	var l = list.New()
+
+	var e1, e2 = l1.Back(), l2.Back()
+	for d := 0;e1 != nil || e2 !=nil; d /= 10 {
+		var v1, v2 int
+		if e1 != nil {
+			v1 = e1.Value.(int)
+			e1 = e1.Prev()
+		}
+		if e2 != nil {
+			v2 = e2.Value.(int)
+			e2 = e2.Prev()
+		}
+
+		d += v1 + v2
+		l.PushFront(d%10)
 	}
 
+	return l
+}
 
+func intToList(v int) *list.List {
+	var l = list.New()
+	for ; v > 0; v /= 10{
+		l.PushFront(v%10)
+	}
+	return l
+}
 
+func printIntList(l *list.List) {
+	if l == nil { return }
+
+	for e := l.Front(); e != nil; e = e.Next() {
+		print(e.Value.(int))
+	}
+
+	fmt.Println()
 }
 
 func InspectSlice(slice []int) {
