@@ -3,17 +3,27 @@ package main
 import (
 	"fmt"
 	"unsafe"
-	"strings"
+	"container/list"
 )
 
 func main() {
-	//var j, k uint8 = 17, 18
-	//var q uint8 =
-	strings.Contains()
-	var a uint8 = 1
-	var b uint8 = 2
-	fmt.Printf("%b\n", (a + (7 - b%7))%7 )
-	fmt.Printf("%d\n", (a - b)%7)
+	var a, b  = 234, 72
+
+	var la, lb = list.New(), list.New()
+	for ;a > 0; a /= 10 {
+		la.PushFront(a%10)
+	}
+	for ;b >0; b /= 10 {
+		lb.PushFront(b%10)
+	}
+
+	// show a b
+
+	for ha := la.Front(); ha!=nil; ha = ha.Next() {
+	}
+
+
+
 }
 
 func InspectSlice(slice []int) {
