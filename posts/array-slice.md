@@ -25,7 +25,31 @@ array在内存里是连续存储的同类型数据的序列，比如[4]int在内
 
 <img src="http://owo5nif4b.bkt.clouddn.com/go-slices-usage-and-internals_slice-array.png" width="400">
 
-Go的array是值，array变量表示整个array，它不像c那样表示指向数组第一个元素的指针。这意味着当赋值或传递一个array时将复制其内容(为避免复制，可以传递指向array的指针)。可以将array看做成像结构体一样的固定长度复合值，但通过索引而不是字段名来访问里面元素
+Go的array变量是值，表示整个array，它不像c那样数组名表示指向数组第一个元素的指针。这意味着当赋值或传递一个array时将复制其内容(为避免复制，可以传递指向array的指针)。可以将array看做成像结构体一样的固定长度复合值，但通过索引而不是字段名来访问里面元素
+
+下面是c里对数组名进行指针运算
+
+```c
+ #include <stdio.h>
+ 
+ int main() {
+     int a[5] = {1,2,3,4,5};
+ 
+     printf("a = %p, a+1 = %p\n", a, a+1);
+     // a就是数组a的地址, 
+     // 但地址位移则是按照类型a[5]的长度为单位
+     printf("&a= %p, &a+1= %p, sizof(a)=%lu\n", &a, &a+1, sizeof(a));
+ }
+```
+
+运行结果
+
+```
+a = 0x7fff5778fae0, a+1 = 0x7fff5778fae4
+&a= 0x7fff5778fae0, &a+1= 0x7fff5778faf4, sizof(a)=20
+```
+
+类似上面的a+1的操作在golang里是不存在的
 
 #### Slice
 
@@ -146,7 +170,7 @@ func InspectSlice(slice []int) {
 	capPtr := (*int)(unsafe.Pointer(capAddr))
 
 	// 取内部数组的地址
-	// a = (*uintptr)(addr)，将addr转换成指向uintptr类型数据的指针
+	// a = (*uintptr)(addr)，将addr从指向slice类型的指针转换成指向uintptr类型数据的指针
 	// ptr = *(*uintptr)(addr))取a这个指针所指向的值, 
 	// 为slice底层数据结构的第一个字段ptr的值
 	// unsafe.Pointer(ptr)将ptr转换成指针
@@ -299,8 +323,6 @@ Inspect slice 'bar' after append 10 to bar:
 ```
 
 从上面结果看bar的底层数组被限制在了foo的底层数组的**0xc420014130**—**0xc420014138**位置，当执行append 10到bar时，由于超出了bar的容量，append会重新生成一个容量更大的array(原来的两倍)来保存bar的数据，地址为**0xc4200121c0**—**0xc4200121d8**. 这样就避免了append操作造成的对foo所允许bar访问的数据之外的数据的更新
-
-
 
 参考：
 

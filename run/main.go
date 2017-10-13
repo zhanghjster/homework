@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"unsafe"
 	"container/list"
+	"reflect"
 )
 
 func main() {
@@ -17,6 +18,13 @@ func main() {
 	// show a b
 	printIntList(a)
 	printIntList(b)
+
+	var e uint16 = 1 << 8 + 99
+	fmt.Printf("%b\n", e)
+	fmt.Printf("%c, %d\n", *(*byte)(unsafe.Pointer(&e)), *(*int8)(unsafe.Pointer(&e)))
+
+	var s = []int{1,2,3,4,5}
+	InspectSlice(s)
 }
 
 func AddTwo(l1, l2 *list.List) *list.List {
@@ -63,7 +71,6 @@ func InspectSlice(slice []int) {
 
 	// 数组的地址
 	addr := unsafe.Pointer(&slice)
-	fmt.Printf("%v, %v\n", addr, &slice[0])
 
 	// len字段的地址
 	lenAddr := uintptr(addr) + uintptr(8)
@@ -84,4 +91,54 @@ func InspectSlice(slice []int) {
 		p := unsafe.Pointer(uintptr(arrPtr) + uintptr(i) * uintptr(unsafe.Sizeof(int(0))))
 		fmt.Printf("[%d] %p %d\n", i, (*int)(p), *(*int)(p))
 	}
+}
+
+func TryUnsafe() {
+	type A struct {
+		v uint16
+	}
+
+	var a = &A{v: 314} // 314 = 58 + 256
+
+	// 将a从A结构体指针转换成uint16，
+	// 由于unit16长度与A的长度相同
+	// 转化后的值与a.v相同， 为 314
+	p8 := *(*uint16)(unsafe.Pointer(a))
+	fmt.Printf("A => uint16 \t[0x%08x] %v\n", p8,  p8)
+
+	// 将a从A结构体指针转换成uint8,
+	// 由于uint8的长度小于A的长度
+	// 转化后出现截断，结果为 a.v%2^8, 为58
+	p16 := *(*uint8)(unsafe.Pointer(a))
+	fmt.Printf("A => uint8 \t[0x%08x] %v\n", p16,  p16)
+
+	// 将a从A结构体转换成int
+	// 由于int32的长度大于A，转化后的结果不可预知
+	p32 := *(*uint32)(unsafe.Pointer(a))
+	fmt.Printf("A => uint32 \t[0x%08x] %d\n", p32,  p32)
+
+
+	var b = &struct{m,n int}{1, 2}
+	// 与 p = unsafe.Pointer(&b.n)相同
+	p := unsafe.Pointer(uintptr(unsafe.Pointer(b)) + uintptr(unsafe.Sizeof(b.m)))
+	fmt.Printf("b addr %p, p addr %p, b.n addr %p\n", b, p, &b.n)
+
+	p = unsafe.Pointer(b)
+	//u := uintptr(unsafe.Pointer(p))
+	p = unsafe.Pointer(uintptr(unsafe.Pointer(p)) + 2*uintptr(unsafe.Sizeof(b.n)))
+	fmt.Printf("%d, %p\n", *(*int)(p), b)
+
+	var s = []int{1,2,3}
+	ip := unsafe.Pointer(uintptr(unsafe.Pointer(&s[0])) + 3 * unsafe.Sizeof(int(0)))
+	*(*int)(ip) = 123
+	fmt.Printf("p is %d\n", *(*int)(ip))
+
+	pf := (*int)(unsafe.Pointer(reflect.ValueOf(new(int)).Pointer()))
+	*pf = 99 // 'c'
+
+	var sf string
+	hdr := (*reflect.StringHeader)(unsafe.Pointer(&sf))
+	hdr.Data = uintptr(unsafe.Pointer(pf))
+	hdr.Len = 1
+	fmt.Println("s => ", sf,", len => ", len(sf))
 }

@@ -20,7 +20,7 @@ categories:
  * 数据类型自身对齐
 
     * int8 byte bool	1字节对齐
-    * int16 		2字节对齐
+    * int16 	               2字节对齐
     * int31 float32 4字节对齐
     * int int64         8字节对齐
     * slice string    8字节对齐
