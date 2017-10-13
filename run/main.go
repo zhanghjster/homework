@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
-	"unsafe"
 	"container/list"
+	"fmt"
 	"reflect"
+	"unsafe"
 )
 
 func main() {
@@ -19,19 +19,21 @@ func main() {
 	printIntList(a)
 	printIntList(b)
 
-	var e uint16 = 1 << 8 + 99
+	var e uint16 = 1<<8 + 99
 	fmt.Printf("%b\n", e)
 	fmt.Printf("%c, %d\n", *(*byte)(unsafe.Pointer(&e)), *(*int8)(unsafe.Pointer(&e)))
 
-	var s = []int{1,2,3,4,5}
+	var s = []int{1, 2, 3, 4, 5}
 	InspectSlice(s)
+
+	println(lengthOfLongestSubstring("abcabcbb"))
 }
 
 func AddTwo(l1, l2 *list.List) *list.List {
 	var l = list.New()
 
 	var e1, e2 = l1.Back(), l2.Back()
-	for d := 0;e1 != nil || e2 !=nil; d /= 10 {
+	for d := 0; e1 != nil || e2 != nil; d /= 10 {
 		var v1, v2 int
 		if e1 != nil {
 			v1 = e1.Value.(int)
@@ -43,22 +45,45 @@ func AddTwo(l1, l2 *list.List) *list.List {
 		}
 
 		d += v1 + v2
-		l.PushFront(d%10)
+		l.PushFront(d % 10)
 	}
 
 	return l
 }
 
+func lengthOfLongestSubstring(s string) int {
+	var max int
+	for i := 0; i < len(s) - max; i++ {
+		var l = 0
+		var m = make(map[byte]bool)
+		for j := i; j < len(s); j++ {
+			c := s[j]
+			if _, ok := m[c]; !ok {
+				m[c] = true
+				l++
+			} else {
+				break
+			}
+		}
+		if max <= l {
+			max = l
+		}
+	}
+	return max
+}
+
 func intToList(v int) *list.List {
 	var l = list.New()
-	for ; v > 0; v /= 10{
-		l.PushFront(v%10)
+	for ; v > 0; v /= 10 {
+		l.PushFront(v % 10)
 	}
 	return l
 }
 
 func printIntList(l *list.List) {
-	if l == nil { return }
+	if l == nil {
+		return
+	}
 
 	for e := l.Front(); e != nil; e = e.Next() {
 		print(e.Value.(int))
@@ -87,8 +112,8 @@ func InspectSlice(slice []int) {
 	fmt.Printf("Slice Addr[%p], Len Addr[0x%x] Cap Addr[0x%x]\n", addr, lenAddr, capAddr)
 	fmt.Printf("Slice length[%d] Cap[%d]\n", *lenPtr, *capPtr)
 
-	for i :=0; i < *lenPtr; i++ {
-		p := unsafe.Pointer(uintptr(arrPtr) + uintptr(i) * uintptr(unsafe.Sizeof(int(0))))
+	for i := 0; i < *lenPtr; i++ {
+		p := unsafe.Pointer(uintptr(arrPtr) + uintptr(i)*uintptr(unsafe.Sizeof(int(0))))
 		fmt.Printf("[%d] %p %d\n", i, (*int)(p), *(*int)(p))
 	}
 }
@@ -104,21 +129,20 @@ func TryUnsafe() {
 	// 由于unit16长度与A的长度相同
 	// 转化后的值与a.v相同， 为 314
 	p8 := *(*uint16)(unsafe.Pointer(a))
-	fmt.Printf("A => uint16 \t[0x%08x] %v\n", p8,  p8)
+	fmt.Printf("A => uint16 \t[0x%08x] %v\n", p8, p8)
 
 	// 将a从A结构体指针转换成uint8,
 	// 由于uint8的长度小于A的长度
 	// 转化后出现截断，结果为 a.v%2^8, 为58
 	p16 := *(*uint8)(unsafe.Pointer(a))
-	fmt.Printf("A => uint8 \t[0x%08x] %v\n", p16,  p16)
+	fmt.Printf("A => uint8 \t[0x%08x] %v\n", p16, p16)
 
 	// 将a从A结构体转换成int
 	// 由于int32的长度大于A，转化后的结果不可预知
 	p32 := *(*uint32)(unsafe.Pointer(a))
-	fmt.Printf("A => uint32 \t[0x%08x] %d\n", p32,  p32)
+	fmt.Printf("A => uint32 \t[0x%08x] %d\n", p32, p32)
 
-
-	var b = &struct{m,n int}{1, 2}
+	var b = &struct{ m, n int }{1, 2}
 	// 与 p = unsafe.Pointer(&b.n)相同
 	p := unsafe.Pointer(uintptr(unsafe.Pointer(b)) + uintptr(unsafe.Sizeof(b.m)))
 	fmt.Printf("b addr %p, p addr %p, b.n addr %p\n", b, p, &b.n)
@@ -128,8 +152,8 @@ func TryUnsafe() {
 	p = unsafe.Pointer(uintptr(unsafe.Pointer(p)) + 2*uintptr(unsafe.Sizeof(b.n)))
 	fmt.Printf("%d, %p\n", *(*int)(p), b)
 
-	var s = []int{1,2,3}
-	ip := unsafe.Pointer(uintptr(unsafe.Pointer(&s[0])) + 3 * unsafe.Sizeof(int(0)))
+	var s = []int{1, 2, 3}
+	ip := unsafe.Pointer(uintptr(unsafe.Pointer(&s[0])) + 3*unsafe.Sizeof(int(0)))
 	*(*int)(ip) = 123
 	fmt.Printf("p is %d\n", *(*int)(ip))
 
@@ -140,5 +164,5 @@ func TryUnsafe() {
 	hdr := (*reflect.StringHeader)(unsafe.Pointer(&sf))
 	hdr.Data = uintptr(unsafe.Pointer(pf))
 	hdr.Len = 1
-	fmt.Println("s => ", sf,", len => ", len(sf))
+	fmt.Println("s => ", sf, ", len => ", len(sf))
 }
