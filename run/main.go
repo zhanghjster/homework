@@ -59,11 +59,11 @@ func lengthOfLongestSubstring(s string) int {
 		for j := i; j < len(s); j++ {
 			c := s[j]
 			if _, ok := m[c]; !ok {
-				m[c] = true
 				l++
 			} else {
 				break
 			}
+			m[c] = true
 		}
 		if max <= l {
 			max = l
