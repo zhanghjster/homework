@@ -8,25 +8,28 @@ import (
 )
 
 func main() {
-	var a = intToList(1023)
-	var b = intToList(2)
 
-	var c = AddTwo(a, b)
+	println(lengthOfLongestSubstring("i"))
+}
 
-	printIntList(c)
+func lengthOfLongestSubstring(s string) int {
+	var m [256]int
+	for i := range m {
+		m[i] = -1
+	}
 
-	// show a b
-	printIntList(a)
-	printIntList(b)
+	var max, cur int = 0, -1
+	for i, c := range s {
+		if cur < m[c] {
+			cur = m[c]
+		}
 
-	var e uint16 = 1<<8 + 99
-	fmt.Printf("%b\n", e)
-	fmt.Printf("%c, %d\n", *(*byte)(unsafe.Pointer(&e)), *(*int8)(unsafe.Pointer(&e)))
-
-	var s = []int{1, 2, 3, 4, 5}
-	InspectSlice(s)
-
-	println(lengthOfLongestSubstring("abcabcbb"))
+		if i-cur > max {
+			max = i - cur
+		}
+		m[c] = i
+	}
+	return max
 }
 
 func AddTwo(l1, l2 *list.List) *list.List {
@@ -49,27 +52,6 @@ func AddTwo(l1, l2 *list.List) *list.List {
 	}
 
 	return l
-}
-
-func lengthOfLongestSubstring(s string) int {
-	var max int
-	for i := 0; i < len(s) - max; i++ {
-		var l = 0
-		var m = make(map[byte]bool)
-		for j := i; j < len(s); j++ {
-			c := s[j]
-			if _, ok := m[c]; !ok {
-				l++
-			} else {
-				break
-			}
-			m[c] = true
-		}
-		if max <= l {
-			max = l
-		}
-	}
-	return max
 }
 
 func intToList(v int) *list.List {

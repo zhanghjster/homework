@@ -40,6 +40,26 @@ func AddTwo(l1, l2 *list.List) *list.List {
 	return l
 }
 
+func LengthOfLongestSubstring(s string) int {
+	var m [256]int
+	for i := range m {
+		m[i] = -1
+	}
+
+	var max, cur int = 0, -1
+	for i, c := range s {
+		if cur < m[c] {
+			cur = m[c]
+		}
+
+		if i-cur > max {
+			max = i - cur
+		}
+		m[c] = i
+	}
+	return max
+}
+
 func IntToList(v int) *list.List {
 	var l = list.New()
 	for ; v > 0; v /= 10 {

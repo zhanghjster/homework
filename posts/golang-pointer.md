@@ -49,8 +49,8 @@ fmt.Printf("A => uint8 \t[0x%08x] %v\n", p16,  p16)
 
 // 将a从A结构体转换成int
 // 由于int32的长度大于A，转化后的结果不可预知
-p := *(*uint32)(unsafe.Pointer(a))
-fmt.Printf("A => uint32 \t[0x%08x] %d\n", p,  p)
+p32 := *(*uint32)(unsafe.Pointer(a))
+fmt.Printf("A => uint32 \t[0x%08x] %d\n", p32,  p32)
 // 目前go1.9 用go vet还没有检测上面这行的错误用法，但不保证将来
 ```
 
@@ -61,8 +61,6 @@ A => uint16     [0x0000013a] 314
 A => uint8      [0x0000003a] 58
 A => uint32     [0xbf30013a] 3207594298
 ```
-
-
 
 从实验结果看， 第二行可见转化后是出现截断，第三行可见最终结果不可预测
 
@@ -164,7 +162,7 @@ fmt.Println("s => ", s,", len => ", len(s))
 
 ##### 总结
 
-unsafe是用于Go compiler而不是Go runtime，使用它的时候必须小心并且遵循unsafe的说明文档，否则会有不可以预料的问题
+unsafe是用于Go compiler而不是Go runtime，使用它的时候必须小心并且遵循unsafe的说明文档
 
 参考：
 
