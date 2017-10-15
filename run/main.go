@@ -1,78 +1,17 @@
 package main
 
 import (
-	"container/list"
 	"fmt"
 	"reflect"
 	"unsafe"
+	"github.com/zhanghjster/homework/alg"
 )
 
 func main() {
-
-	println(lengthOfLongestSubstring("i"))
+	var nums = []int{-4,-2,-2,-2,0,1,2,2,2,3,3,4,4,6,6}
+	fmt.Printf("%v\n", alg.ThreeSum(nums))
 }
 
-func lengthOfLongestSubstring(s string) int {
-	var m [256]int
-	for i := range m {
-		m[i] = -1
-	}
-
-	var max, cur int = 0, -1
-	for i, c := range s {
-		if cur < m[c] {
-			cur = m[c]
-		}
-
-		if i-cur > max {
-			max = i - cur
-		}
-		m[c] = i
-	}
-	return max
-}
-
-func AddTwo(l1, l2 *list.List) *list.List {
-	var l = list.New()
-
-	var e1, e2 = l1.Back(), l2.Back()
-	for d := 0; e1 != nil || e2 != nil; d /= 10 {
-		var v1, v2 int
-		if e1 != nil {
-			v1 = e1.Value.(int)
-			e1 = e1.Prev()
-		}
-		if e2 != nil {
-			v2 = e2.Value.(int)
-			e2 = e2.Prev()
-		}
-
-		d += v1 + v2
-		l.PushFront(d % 10)
-	}
-
-	return l
-}
-
-func intToList(v int) *list.List {
-	var l = list.New()
-	for ; v > 0; v /= 10 {
-		l.PushFront(v % 10)
-	}
-	return l
-}
-
-func printIntList(l *list.List) {
-	if l == nil {
-		return
-	}
-
-	for e := l.Front(); e != nil; e = e.Next() {
-		print(e.Value.(int))
-	}
-
-	fmt.Println()
-}
 
 func InspectSlice(slice []int) {
 

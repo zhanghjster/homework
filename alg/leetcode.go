@@ -3,6 +3,7 @@ package alg
 import (
 	"container/list"
 	"fmt"
+	"sort"
 )
 
 func TwoSum(a []int, t int) (int, int) {
@@ -18,7 +19,44 @@ func TwoSum(a []int, t int) (int, int) {
 	return -1, -1
 }
 
-func AddTwo(l1, l2 *list.List) *list.List {
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
+
+func AddTwoSingly(l1, l2 *ListNode) *ListNode {
+	var h = &ListNode{}
+	var e = h
+
+	var e1, e2 = l1, l2
+	for d := 0; e1 != nil || e2 != nil || d > 0; d /= 10 {
+		var v1, v2 int
+		if e1 != nil {
+			v1 = e1.Val
+			e1 = e1.Next
+		}
+		if e2 != nil {
+			v2 = e2.Val
+			e2 = e2.Next
+		}
+		d += v1 + v2
+		e.Next = &ListNode{
+			Val: d % 10,
+		}
+		e = e.Next
+	}
+
+	return h.Next
+}
+
+func AddTwoDoubly(l1, l2 *list.List) *list.List {
 	var l = list.New()
 
 	var e1, e2 = l1.Back(), l2.Back()
@@ -59,6 +97,125 @@ func LengthOfLongestSubstring(s string) int {
 	}
 	return max
 }
+
+func LongestPalindrome(s string) string {
+	if len(s) <= 1 {
+		return s
+	}
+
+	var p, q int
+	for j := 0; j < len(s)-1; j++ {
+		// 以j和j+1为中心
+		i, k := j, j+1
+		for i>=0 && k < len(s) && s[i] == s[k] {
+			if k-i > q-p {
+				q, p = k, i
+			}
+			k++
+			i--
+		}
+
+		// 以j为中心
+		i, k = j-1, j+1
+		for i>=0 && k < len(s) && s[i] == s[k] {
+			if k-i > q-p {
+				q, p = k, i
+			}
+			k++
+			i--
+		}
+	}
+
+	return s[p:q+1]
+}
+
+// 负数都不是回文的
+// 个位数都是回文的
+func PalindromeNumber(x int) bool {
+	var y int
+	for i := x; i > 0 && y >= 0; i /= 10 {
+		y = 10*y + i%10
+	}
+
+	return x == y
+}
+
+func PowFloat(x float64, n int) float64 {
+	var r float64 = 1.0
+	if n < 0 {
+		n = -n
+		x = 1 / x
+	}
+	for n > 0 {
+		if n&1 != 0 {
+			r *= x
+		}
+		x *= x
+		n >>= 1
+	}
+
+	return r
+}
+
+func ReverseInt(x int) int {
+	var r, p int32
+	for x != 0 {
+		r = r*10 + int32(x%10)
+		// check overflow
+		if r/10 != p {
+			return 0
+		}
+		p = r
+		x /= 10
+	}
+
+	return int(r)
+}
+
+func ThreeSum(nums []int) [][]int {
+	if len(nums) < 3 {
+		return nil
+	}
+
+	sort.Ints(nums)
+
+	var res = [][]int{}
+	for i:=0; i< len(nums) - 2; i++ {
+		if i > 0 && nums[i] == nums[i-1] {
+			continue
+		}
+
+		var j = i + 1
+		var k = len(nums)-1
+		for j < k {
+			if j != i+1 && nums[j] == nums[j-1] {
+				j++
+				continue
+			}
+
+			if k != len(nums) - 1 && nums[k] == nums[k+1] {
+				k--
+				continue
+			}
+
+			var p = nums[i] + nums[j] + nums[k]
+			switch {
+			case p == 0 :
+				res = append(res, []int{nums[i], nums[j], nums[k]})
+				k--
+				j++
+			case p > 0:
+				k--
+			case p <  0:
+				j++
+			}
+		}
+	}
+
+	return res
+}
+
+//********************************工具函数**************************//
 
 func IntToList(v int) *list.List {
 	var l = list.New()

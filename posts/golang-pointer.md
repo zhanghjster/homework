@@ -1,11 +1,11 @@
 ---
 title: Golang unsafe Pointer
-date: 2017-10-13 11:37:31
+date: 2017-10-13 20:37:31
 tags:
    - go
    - unsafe
    - pointer
-categories: 基础
+categories: go
 ---
 
 Golang的unsafe.Pointer表示指向任意类型的指针，它有其他类型不具备的四种特殊操作
@@ -16,6 +16,8 @@ Golang的unsafe.Pointer表示指向任意类型的指针，它有其他类型不
 - 一个Pointer可以转换成uintptr
 
 通过使用Pointer可以让程序绕过类型系统，做到对任意内存地址的读取，但需要非常小心。下面介绍他的有效使用方式，除这些外其他均为无效的，即便是有效的模式，也有重要的注意事项
+
+<!-- more -->
 
 ##### 将 *T1 转换成 *T2
 
