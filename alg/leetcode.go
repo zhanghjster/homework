@@ -79,23 +79,79 @@ func AddTwoDoubly(l1, l2 *list.List) *list.List {
 }
 
 func LengthOfLongestSubstring(s string) int {
+	// 高效不通用版本
 	var m [256]int
 	for i := range m {
 		m[i] = -1
 	}
 
-	var max, cur int = 0, -1
+	// 最大长度
+	var max int = 0
+	// 上一次重复时的地址
+	var last int = -1
 	for i, c := range s {
-		if cur < m[c] {
-			cur = m[c]
+		// 实现两个目的
+		// 1. c 出现过
+		// 2. 更新上一次重复出现的地址
+		if last < m[c] {
+			last = m[c]
 		}
 
-		if i-cur > max {
-			max = i - cur
+		if i-last > max {
+			max = i - last
 		}
 		m[c] = i
 	}
+
 	return max
+
+	/* 容易理解版本
+	var m = make([]int, 256)
+	// max 最大长度，cur当前长度
+	var max, cur int
+	for i, c := range s {
+		// 上一次位置
+		j := m[c]
+
+		// 字符为出现过或上一次位置在 i - cur之前
+		// cur++
+		if j == 0  ||  i - cur + 1 > j {
+			cur++
+		} else {
+			// 更新当前长度最新
+			cur = i + 1 - j
+		}
+
+		if cur > max {
+			max = cur
+		}
+		// 更新当前位置
+		m[c] = i + 1
+	}
+	return max
+	*/
+
+	/* 低效率版
+	var max int
+	for i := 0; i < len(s) - max; i++ {
+		var l = 0
+		var m = make(map[byte]int)
+		for j := i; j < len(s); j++ {
+			c := s[j]
+			idx, ok := m[c]
+			if !ok {
+				m[c] = j
+				l++
+			} else {
+				i = idx
+				break
+			}
+		}
+		if max <= l {
+			max = l
+		}
+	}
+	return max*/
 }
 
 func LongestPalindrome(s string) string {
