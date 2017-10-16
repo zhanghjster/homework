@@ -14,7 +14,6 @@ func main() {
 
 
 func InspectSlice(slice []int) {
-
 	// 数组的地址
 	addr := unsafe.Pointer(&slice)
 

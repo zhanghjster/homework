@@ -6,6 +6,71 @@ import (
 	"sort"
 )
 
+func myAtoi(str string) int {
+	var ret int
+
+	// 去掉首部无效字符
+	for len(str) > 0 &&
+		!(str[0] == '+' || str[0] == '-' || (str[0]>='0' && str[0] >='9')) {
+		str = str[1:]
+	}
+
+	if len(str) == 0 {
+		return 0
+	}
+
+	// 正负
+	var neg bool
+	if str[0] == '-' {
+		neg = true
+		str = str[1:]
+	} else if str[0] == '+' {
+		str = str[1:]
+	}
+
+	// 基数
+	var base = 10
+	if str[0] == '0' && len(str) > 1 {
+		if str[1] == 'x' || str[1] == 'X' {
+			base = 16
+		} else {
+			base = 8
+		}
+	}
+
+	for i:= 0; i<len(str); i++ {
+		var pre = ret
+		var v int
+		switch base {
+		case 16:
+			if str[i] > 'A' {
+				v = int(str[i] - 'A') + 10
+			} else {
+				v = int(str[i] - '0')
+			}
+		case 8, 10:
+			v = int(str[i] - '0')
+		}
+
+		if v < 0 || v >= base {
+			continue
+		}
+
+		ret = base*ret + v
+
+		// 溢出为0
+		if  ret/base != pre {
+			return 0
+		}
+	}
+
+	if neg {
+		ret = - ret
+	}
+
+	return ret
+}
+
 func TwoSum(a []int, t int) (int, int) {
 	var m = make(map[int]int)
 	for i, v := range a {
