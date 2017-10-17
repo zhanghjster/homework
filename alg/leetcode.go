@@ -6,6 +6,18 @@ import (
 	"sort"
 )
 
+func RemoveElement(nums []int, val int) int {
+	var begin int
+	for i := 0; i <len(nums) ;i++ {
+		if nums[i] != val {
+			begin++
+			nums[begin] = nums[i]
+		}
+	}
+
+	return begin
+}
+
 func myAtoi(str string) int {
 	var ret int
 
