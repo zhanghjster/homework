@@ -12,10 +12,10 @@ func TestTwoSum(t *testing.T) {
 	assert.Equal(t, j, 2)
 }
 
-func TestThreeSum(t *testing.T) {
-
+func TestRemoveElement(t *testing.T) {
+	var a = []int{1,2,3,2,5,2,3,6}
+	assert.Equal(t, RemoveElement(a, 2), 5)
 }
-
 func TestAddTwo(t *testing.T) {
 	var a, b = 438, 92
 	l1, l2 := IntToList(a), IntToList(b)
