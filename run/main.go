@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"reflect"
 	"unsafe"
-	"github.com/zhanghjster/homework/alg"
+	"time"
 )
 
 func main() {
-	var nums = []int{-4,-2,-2,-2,0,1,2,2,2,3,3,4,4,6,6}
-	fmt.Printf("%v\n", alg.ThreeSum(nums))
+	fmt.Println(time.Now().Format("2006-01-02T15:04:05.000-0700"))
+	fmt.Println(time.Now().Format("2006-01-02T15:04:05.000Z0700"))
+	fmt.Println(time.Now().UTC().Format("2006-01-02T15:04:05.999-0700"))
+	fmt.Println(time.Now().UTC().Format("2006-01-02T15:04:05.999Z0700"))
 }
 
 
