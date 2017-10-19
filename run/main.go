@@ -4,14 +4,25 @@ import (
 	"fmt"
 	"reflect"
 	"unsafe"
-	"github.com/zhanghjster/homework/alg"
+	"bytes"
 )
 
 func main() {
-	var nums = []int{-4,-2,-2,-2,0,1,2,2,2,3,3,4,4,6,6}
-	fmt.Printf("%v\n", alg.ThreeSum(nums))
-}
+	buf := bytes.NewBufferString("abcd")
+	fmt.Println(buf.String())
 
+	buf.ReadByte()
+	fmt.Println(buf.UnreadByte())
+
+	fmt.Println(buf.ReadString('e'))
+
+	// 此处读取返回了 io.EOF
+	fmt.Println(buf.ReadString('e'))
+	// 此处并没有返回error
+	fmt.Println(buf.UnreadByte())
+
+	fmt.Println(buf.String())
+}
 
 func InspectSlice(slice []int) {
 	// 数组的地址
