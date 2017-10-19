@@ -1,8 +1,20 @@
-bytes.Buffer是带有读写方法的变长字节缓冲区，零值的Buffer是一个即可使用的空缓存
+---
+title: Bytes Buffer 
+date: 2017-10-19 22:09:32
+tags:
+  - buffer
+  - bytes 
+  - 注释
+categories: go
+---
+
+bytes.Buffer是带有读写方法的变长字节缓冲区，零值的Buffer是一个开箱即用的空缓存，到目前用了多次，所以是时候将部分注释拎出来做个总结，强化一下记忆与理解
 
 ```go
 var buf bytes.buffer
 ```
+
+<!-- more -->
 
 #### func NewBuffer
 
@@ -12,7 +24,7 @@ func NewBuffer(buf []byte) *Buffer
 
 使用 buf 作为初始内容创建一个Buffer，新的buffer接管 buf，调用者不应再使用buf。通过NewBuffer可以创建一个缓冲区来读取现有内容(buff)。或者初始化写入的大小，但buff应该用所需的capacity和为0的length来初始化
 
-通常情况下使用new(Buffer)或者直接声明Buffer变量就可以搞笑的初始化一个Buffer
+通常情况下使用new(Buffer)或者直接声明Buffer变量就可以高效的初始化一个Buffer
 
 #### func NewBufferString
 
@@ -23,6 +35,12 @@ func NewStringBuffer(s string) *Buffer
 使用s作为初始内容生成一个Buffer，可以用来创建一个用于读取一个字符串的Buffer
 
 #### func (*Buffer) Bytes()
+
+```go
+func (b *Buffer) Bytes() []byte
+```
+
+
 
 返回长度为b.Len()的slice，为buffer里还没有被读出的内容。slice会一直有效到再次对buffer进行 Write、Read、Reset、Truncate等更新操作，所以更新slice会影响到将来的read操作
 
@@ -85,10 +103,10 @@ fmt.Println(buf.ReadByte())
 #### func (*Buffer) ReadBytes
 
 ```go
-func (b *Buffer) ReadBytes(dlim byte) (line []byte, err error) 
+func (b *Buffer) ReadBytes(delim byte) (line []byte, err error) 
 ```
 
-读取buffer里一直到第一次出现dlim的所有字节，返回包含dlim在内的slice。如果在找打dlimiter之前遇到error，则返回已经读取的数据和 error(通常是io.EOF)。当且仅当line不以dlim为结尾时才 err != nil
+读取buffer里一直到第一次出现delim的所有字节，返回包含delim在内的slice。如果在找打delimiter之前遇到error，则返回已经读取的数据和 error(通常是io.EOF)。当且仅当line不以delim为结尾时才 err != nil
 
 ```go
 buf := bytes.NewBufferString("abcd")
@@ -122,7 +140,7 @@ buf := bytes.NewBufferString(s)
 // 读取一个字符破坏编码
 buf.ReadByte()
 
-// 无效的编码吗，读取一个字节
+// 无效的编码，读取一个字节
 // 返回 "U+FFFD", 1, nil
 r, n, err := buf.ReadRune()
 fmt.Printf("%+q %d, %v\n", r, n, err)
@@ -285,3 +303,46 @@ func (b *Buffer) WriteTo(w io.Wirter) (n int64, err error)
 ```
 
 将buffe中内容写入到writer，返回写入的字节数和写入过程中遇到的任何错误
+
+#### 总结
+
+1. 读取方法
+
+   ```go
+   func (b *Buffer) Read(p []byte) (n int, err error)
+   func (b *Buffer) ReadByte() (byte, error)
+   func (b *Buffer) ReadBytes(delim byte) ([]byte, error) 
+   func (b *Buffer) ReadString(delim byte) (line string, err error)
+   func (b *Buffer) ReadRune() (r rune, err error)
+   func (b *Buffer) ReadFrom(r io.Reader) (n int64, err error)
+   func (b *Buffer) Next(n int) []byte
+   func (b *Buffer) Bytes() []byte
+   func (b *Buffer) String() string
+
+   ```
+
+2. 写入方法
+
+   ```go
+   func (b *Buffer) Write(p []byte) (n int, err error)
+   func (b *Buffer) WriteByte(c byte) error
+   func (b *Buffer) WriteString(s string) (n int, err error)
+   func (b *Buffer) WriteRune(r rune) (n int, err error)
+   func (b *Buffer) WriteTo(w io.Wirter) (n int64, err error)
+   ```
+
+3. 其他
+
+   ```
+   func (b *Buffer) Cap() int
+   func (b *Buffer) Len() int
+   func (b *Buffer) Trancate(n int)
+   func (b *Buffer) Grow(n int)	
+   func (b *Buffer) Reset()
+   func (b *Buffer) UnReadByte() error
+   func (b *Buffer) UnReadRune() error
+   ```
+
+   ​
+
+   ​
