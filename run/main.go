@@ -4,16 +4,25 @@ import (
 	"fmt"
 	"reflect"
 	"unsafe"
-	"time"
+	"bytes"
 )
 
 func main() {
-	fmt.Println(time.Now().Format("2006-01-02T15:04:05.000-0700"))
-	fmt.Println(time.Now().Format("2006-01-02T15:04:05.000Z0700"))
-	fmt.Println(time.Now().UTC().Format("2006-01-02T15:04:05.999-0700"))
-	fmt.Println(time.Now().UTC().Format("2006-01-02T15:04:05.999Z0700"))
-}
+	buf := bytes.NewBufferString("abcd")
+	fmt.Println(buf.String())
 
+	buf.ReadByte()
+	fmt.Println(buf.UnreadByte())
+
+	fmt.Println(buf.ReadString('e'))
+
+	// 此处读取返回了 io.EOF
+	fmt.Println(buf.ReadString('e'))
+	// 此处并没有返回error
+	fmt.Println(buf.UnreadByte())
+
+	fmt.Println(buf.String())
+}
 
 func InspectSlice(slice []int) {
 	// 数组的地址
