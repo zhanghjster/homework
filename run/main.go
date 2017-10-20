@@ -8,20 +8,10 @@ import (
 )
 
 func main() {
-	buf := bytes.NewBufferString("abcd")
-	fmt.Println(buf.String())
-
-	buf.ReadByte()
-	fmt.Println(buf.UnreadByte())
-
-	fmt.Println(buf.ReadString('e'))
-
-	// 此处读取返回了 io.EOF
-	fmt.Println(buf.ReadString('e'))
-	// 此处并没有返回error
-	fmt.Println(buf.UnreadByte())
-
-	fmt.Println(buf.String())
+	var s = []byte("abcd")
+	var buf = bytes.NewBuffer(s)
+	buf.WriteString("ef")
+	fmt.Println(s)
 }
 
 func InspectSlice(slice []int) {

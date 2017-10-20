@@ -42,7 +42,7 @@ func (b *Buffer) Bytes() []byte
 
 
 
-返回长度为b.Len()的slice，为buffer里还没有被读出的内容。slice会一直有效到再次对buffer进行 Write、Read、Reset、Truncate等更新操作，所以更新slice会影响到将来的read操作
+返回长度为b.Len()的slice，为buffer里还没有被读出的内容。slice会一直有效到再次对buffer进行 Write、Read、Reset、Truncate等更新操作，所以更新slice会直接更新缓存里的内容，影响将来的read操作
 
 #### func (*Buffer) Next()
 
@@ -304,7 +304,7 @@ func (b *Buffer) WriteTo(w io.Wirter) (n int64, err error)
 
 将buffe中内容写入到writer，返回写入的字节数和写入过程中遇到的任何错误
 
-#### 总结
+#### 方法总结
 
 1. 读取方法
 
@@ -318,7 +318,6 @@ func (b *Buffer) WriteTo(w io.Wirter) (n int64, err error)
    func (b *Buffer) Next(n int) []byte
    func (b *Buffer) Bytes() []byte
    func (b *Buffer) String() string
-
    ```
 
 2. 写入方法
@@ -345,4 +344,86 @@ func (b *Buffer) WriteTo(w io.Wirter) (n int64, err error)
 
    ​
 
-   ​
+#### 使用举例
+
+使用buffer拼装复杂的字符串比直接用 ’+‘ 连接速度和内存上都比较占优。比如将 ["key1","value1","key2","value2",……]的数组拼装成 'key1=value1&key2=value2…..'格式的字符串，采用两种方式处理办法的的比较如下
+
+```go
+package alg
+
+import (
+	"testing"
+	"strings"
+	"bytes"
+)
+
+var strList = []string{
+	"key1", "value1",
+	"key2", "value2",
+	"key3", "value3",
+	"key4", "value4",
+	"key5", "value5",
+	"key6", "value6",
+	"key7", "value7",
+	"key8", "value8",
+	"key9", "value9",
+}
+
+// 使用 + 连接key和value，然后用join连接key=value
+func BenchmarkStrAppendJoin(b *testing.B){
+	for i := 0; i < b.N; i++ {
+		var list = []string{}
+		for i:=0; i< len(strList); i+=2 {
+			list = append(list, strList[i] + "=" + strList[i+1])
+		}
+		strings.Join(list, "&")
+	}
+}
+
+// 使用 + 连接字符串
+func BenchmarkStrPlusConcat(b *testing.B) {
+	for i:=0; i< b.N; i++{
+		var str string
+		for i:=0; i< len(strList); i+=2 {
+			var gap string
+			if i > 0  {
+				gap = "&"
+			}
+			str += gap + strList[i] + "=" + strList[i+1]
+		}
+	}
+}
+
+// 使用buffer缓存拼装的字符串
+func BenchmarkStrBuff(b *testing.B) {
+	for i:=0; i< b.N; i++ {
+		var buf bytes.Buffer
+		for i:=0; i < len(strList); i+=2 {
+			if i > 0 {
+				buf.WriteByte('&')
+			}
+			buf.WriteString(strList[i])
+			buf.WriteByte('=')
+			buf.WriteString(strList[i+1])
+		}
+		_ = buf.String()
+	}
+}
+
+```
+
+结果如下，可以见使用buffer来缓存速度和内存消耗都最好
+
+```
+$ go test -run useless -bench Str -benchmem
+goos: darwin
+goarch: amd64
+pkg: github.com/zhanghjster/homework/alg
+BenchmarkStrAppendJoin-4         1000000              1831 ns/op             864 B/op         16 allocs/op
+BenchmarkStrPlusConcat-4         1000000              1077 ns/op             592 B/op          9 allocs/op
+BenchmarkStrBuff-4               2000000               710 ns/op             368 B/op          3 allocs/op
+PASS
+ok      github.com/zhanghjster/homework/alg     5.104s
+
+```
+
