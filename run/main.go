@@ -4,14 +4,15 @@ import (
 	"fmt"
 	"reflect"
 	"unsafe"
-	"bytes"
+	"net/http"
 )
 
 func main() {
-	var s = []byte("abcd")
-	var buf = bytes.NewBuffer(s)
-	buf.WriteString("ef")
-	fmt.Println(s)
+	client := http.Client{}
+	req, _ := http.NewRequest("POST", "application/json", nil)
+	client.Do(req)
+	client.PostForm("asdf", nil)
+	http.Transport{}
 }
 
 func InspectSlice(slice []int) {
