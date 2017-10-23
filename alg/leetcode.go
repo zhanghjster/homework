@@ -26,6 +26,15 @@ func Reverse(arr []int, start, end, d int) {
 	}
 }
 
+func Swap(arr[]int, start, end, d int) {
+	end -= d
+	for i:=0; i < d; i++ {
+		arr[start], arr[end] = arr[end], arr[start]
+		start++
+		end++
+	}
+}
+
 func ReverseArrayBlock(nums []int, d int) {
 	var left, right = d, len(nums) - d
 
@@ -34,20 +43,20 @@ func ReverseArrayBlock(nums []int, d int) {
 	}
 
 	if left == right {
-		Reverse(nums, 0, len(nums) -1, d)
+		Swap(nums, 0, len(nums), d)
 		return
 	}
 
 	if left > right {
-		Reverse(nums, 0, len(nums) - 1, right)
+		d = len(nums) - d
+		Swap(nums, 0, len(nums), d)
 		ReverseArrayBlock(nums[left:], d)
 	}
 
 	if left < right {
-		Reverse(nums, 0, len(nums) - 1, left)
+		Swap(nums, 0, len(nums), d)
 		ReverseArrayBlock(nums[:right], d)
 	}
-
 }
 
 func RotateArray(arr []int, d int) {
