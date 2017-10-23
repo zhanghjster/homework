@@ -14,5 +14,15 @@ func (c *Client) PostForm(url string, data url.Values) (resp *Response, err erro
 func (c *Client) Post(url string, contentType string, body io.Reader) (resp *Response, err error)
 ```
 
+#### 
+
+####  
+
+
+
+
+
+
+
 
 

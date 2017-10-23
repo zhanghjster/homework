@@ -332,7 +332,7 @@ func (b *Buffer) WriteTo(w io.Wirter) (n int64, err error)
 
 3. 其他
 
-   ```
+   ```go
    func (b *Buffer) Cap() int
    func (b *Buffer) Len() int
    func (b *Buffer) Trancate(n int)

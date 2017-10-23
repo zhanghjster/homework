@@ -5,14 +5,13 @@ import (
 	"reflect"
 	"unsafe"
 	"net/http"
+	"bytes"
+	"bufio"
+	"strings"
 )
 
 func main() {
-	client := http.Client{}
-	req, _ := http.NewRequest("POST", "application/json", nil)
-	client.Do(req)
-	client.PostForm("asdf", nil)
-	http.Transport{}
+	bufio.NewReader()
 }
 
 func InspectSlice(slice []int) {
