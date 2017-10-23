@@ -48,13 +48,12 @@ func ReverseArrayBlock(nums []int, d int) {
 	}
 
 	if left > right {
-		d = len(nums) - d
-		Swap(nums, 0, len(nums), d)
-		ReverseArrayBlock(nums[left:], d)
+		Swap(nums, 0, len(nums), right)
+		ReverseArrayBlock(nums[right:], d)
 	}
 
 	if left < right {
-		Swap(nums, 0, len(nums), d)
+		Swap(nums, 0, len(nums), left)
 		ReverseArrayBlock(nums[:right], d)
 	}
 }
