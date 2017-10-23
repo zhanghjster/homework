@@ -6,6 +6,77 @@ import (
 	"sort"
 )
 
+func ReverseArray(nums []int, d int) {
+	if d > 0 {
+		d = len(nums) - d%len(nums)
+	} else {
+		d = -d %len(nums)
+	}
+	Reverse(nums, 0, d-1, d)
+	Reverse(nums, d, len(nums) - 1,  len(nums) - d)
+	Reverse(nums, 0, len(nums) - 1, len(nums))
+}
+
+func Reverse(arr []int, start, end, d int) {
+	for ;d > 0;d-- {
+		arr[start], arr[end] = arr[end], arr[start]
+		start++
+		end--
+		d--
+	}
+}
+
+func ReverseArrayBlock(nums []int, d int) {
+	var left, right = d, len(nums) - d
+
+	if d == 0 || d == len(nums) {
+		return
+	}
+
+	if left == right {
+		Reverse(nums, 0, len(nums) -1, d)
+		return
+	}
+
+	if left > right {
+		Reverse(nums, 0, len(nums) - 1, right)
+		ReverseArrayBlock(nums[left:], d)
+	}
+
+	if left < right {
+		Reverse(nums, 0, len(nums) - 1, left)
+		ReverseArrayBlock(nums[:right], d)
+	}
+
+}
+
+func RotateArray(arr []int, d int) {
+	var n = len(arr)
+	for i:=0; i<Gcd(d, d); i++ {
+		tmp := arr[i]
+		j:=i
+		for {
+			k := j+d
+			if k>=n {
+				k -= n
+			}
+			if k==i {
+				break
+			}
+			arr[j] = arr[k]
+			j = k
+		}
+		arr[j] = tmp
+	}
+}
+
+func Gcd(a, b int) int {
+	if b == 0 {
+		return a
+	}
+	return Gcd(b, a%b)
+}
+
 // Given an array and a value, remove all instances of that value
 // in place and return the new length.
 //

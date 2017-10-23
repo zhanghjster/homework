@@ -4,15 +4,13 @@ import (
 	"fmt"
 	"reflect"
 	"unsafe"
-	"net/http"
+	"sort"
 )
 
 func main() {
-	client := http.Client{}
-	req, _ := http.NewRequest("POST", "application/json", nil)
-	client.Do(req)
-	client.PostForm("asdf", nil)
-	http.Transport{}
+	s := []int{5, 2, 6, 3, 1, 4}
+	sort.Reverse(sort.IntSlice(s))
+	fmt.Println(sort.Reverse(sort.IntSlice(s)))
 }
 
 func InspectSlice(slice []int) {
