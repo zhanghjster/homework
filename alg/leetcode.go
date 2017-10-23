@@ -6,83 +6,99 @@ import (
 	"sort"
 )
 
-func ReverseArray(nums []int, d int) {
+// 将数组nums前d个元素翻转到尾部
+// {1，2，3，4，5，6，7}的前3个元素翻转到尾部后
+// {4，5，6，7，1，2，3}
+func RotateReverse(nums []int, d int) {
 	if d > 0 {
 		d = len(nums) - d%len(nums)
 	} else {
 		d = -d %len(nums)
 	}
-	Reverse(nums[:d])
-	Reverse(nums[d:])
-	Reverse(nums)
+	reverse(nums[:d])
+	reverse(nums[d:])
+	reverse(nums)
 }
-
-func Reverse(arr []int) {
-	var start, end = 0, len(arr) - 1
+func reverse(nums []int) {
+	var start, end = 0, len(nums) - 1
 	for start < end{
-		arr[start], arr[end] = arr[end], arr[start]
+		nums[start], nums[end] = nums[end], nums[start]
 		start++
 		end--
 	}
 }
 
-func Swap(arr[]int, start, end, d int) {
-	end -= d
-	for i:=0; i < d; i++ {
-		arr[start], arr[end] = arr[end], arr[start]
-		start++
-		end++
-	}
-}
-
-func ReverseArrayBlock(nums []int, d int) {
+func RotateBlockSwap(nums []int, d int) {
 	var left, right = d, len(nums) - d
 
 	if d == 0 || d == len(nums) {
 		return
 	}
 
+	// AB => BA
 	if left == right {
-		Swap(nums, 0, len(nums), d)
+		swap(nums, d)
 		return
 	}
 
+	// AlArB => BArAl => BAlAr
 	if left > right {
-		Swap(nums, 0, len(nums), right)
-		ReverseArrayBlock(nums[right:], d)
+		swap(nums, right)
+		// d = Al = left - right
+		RotateBlockSwap(nums[right:], left - right)
 	}
 
+	// ABlBr = BrBlA => BlBrA
 	if left < right {
-		Swap(nums, 0, len(nums), left)
-		ReverseArrayBlock(nums[:right], d)
+		swap(nums, left)
+		// d = Br = left
+		RotateBlockSwap(nums[:right], left)
 	}
 }
 
-func RotateArray(arr []int, d int) {
-	var n = len(arr)
-	for i:=0; i<Gcd(d, d); i++ {
-		tmp := arr[i]
-		j:=i
+func swap(nums[]int, d int) {
+	var s1, s2 = 0, len(nums) - d
+	for s1 < d {
+		nums[s1], nums[s2] = nums[s2], nums[s1]
+		s1++
+		s2++
+	}
+}
+
+func RotateJuggling(nums []int, d int) {
+	var n = len(nums)
+
+	// 假设gcd=(n,d)=g，则n=a*g,d=b*g
+	// LCM(n,d) = a*b*g
+	// 时间复杂度
+	//  = gcd(n,d)*(LCM(n,d)/d)
+	//  = g*(g*a*b/d)
+	//  = (a*g)*(b*g)/d
+	//  = a*g
+	//  = n
+	for i:=0; i < gcd(n, d); i++ {
+		var tmp = nums[i]
+		j := i
+		// LCM(n,d)/d
 		for {
 			k := j+d
-			if k>=n {
+			if k >= n {
 				k -= n
 			}
-			if k==i {
+			if k == i {
 				break
 			}
-			arr[j] = arr[k]
+			nums[j] = nums[k]
 			j = k
 		}
-		arr[j] = tmp
+		nums[j] = tmp
 	}
 }
-
-func Gcd(a, b int) int {
+func gcd(a, b int) int {
 	if b == 0 {
 		return a
 	}
-	return Gcd(b, a%b)
+	return gcd(b, a%b)
 }
 
 // Given an array and a value, remove all instances of that value

@@ -52,45 +52,45 @@ func TestLongestPalindrome(t *testing.T) {
 }
 
 func TestGcd(t *testing.T) {
-	assert.Equal(t, 1, Gcd(13, 3))
-	assert.Equal(t, 3, Gcd(9, 6))
+	assert.Equal(t, 1, gcd(13, 3))
+	assert.Equal(t, 3, gcd(9, 6))
 }
 
-func TestRotateArray(t *testing.T) {
+func TestRotateJuggling(t *testing.T) {
 	var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
-	RotateArray(a, 6)
+	RotateJuggling(a, 6)
 	t.Logf("%v", a)
 }
 
-func TestReverseArray(t *testing.T) {
+func TestRotateReverse(t *testing.T) {
 	var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
-	ReverseArray(a, 6)
+	RotateReverse(a, 6)
 	t.Logf("%v", a)
 }
 
-func TestReverseArrayBlock(t *testing.T) {
+func TestRotateBlockSwap(t *testing.T) {
 	var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
-	ReverseArrayBlock(a, 9)
+	RotateBlockSwap(a, 9)
 	t.Logf("%v", a)
 }
 
-func BenchmarkRotateArray(b *testing.B) {
+func BenchmarkRotateJuggling(b *testing.B) {
 	for i:=0; i<b.N; i++ {
 		var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
-		RotateArray(a, 6)
+		RotateJuggling(a, 6)
 	}
 }
 
-func BenchmarkReverseArray(b *testing.B) {
+func BenchmarkRotateReverse(b *testing.B) {
 	for i:=0; i<b.N; i++ {
 		var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
-		ReverseArray(a, 5)
+		RotateReverse(a, 5)
 	}
 }
 
-func BenchmarkReverseArrayBlock(b *testing.B) {
+func BenchmarkRotateBlockSwap(b *testing.B) {
 	for i:=0; i<b.N; i++ {
 		var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
-		ReverseArrayBlock(a, 5)
+		RotateBlockSwap(a, 5)
 	}
 }
