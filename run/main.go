@@ -4,14 +4,11 @@ import (
 	"fmt"
 	"reflect"
 	"unsafe"
-	"net/http"
-	"bytes"
-	"bufio"
-	"strings"
+
 )
 
 func main() {
-	bufio.NewReader()
+
 }
 
 func InspectSlice(slice []int) {

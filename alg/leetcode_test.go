@@ -50,3 +50,47 @@ func TestLongestPalindrome(t *testing.T) {
 	assert.Equal(t, LongestPalindrome("abab"),"aba")
 	assert.Equal(t, LongestPalindrome("abba"),"abba")
 }
+
+func TestGcd(t *testing.T) {
+	assert.Equal(t, 1, Gcd(13, 3))
+	assert.Equal(t, 3, Gcd(9, 6))
+}
+
+func TestRotateArray(t *testing.T) {
+	var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
+	RotateArray(a, 6)
+	t.Logf("%v", a)
+}
+
+func TestReverseArray(t *testing.T) {
+	var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
+	ReverseArray(a, 6)
+	t.Logf("%v", a)
+}
+
+func TestReverseArrayBlock(t *testing.T) {
+	var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
+	ReverseArrayBlock(a, 9)
+	t.Logf("%v", a)
+}
+
+func BenchmarkRotateArray(b *testing.B) {
+	for i:=0; i<b.N; i++ {
+		var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
+		RotateArray(a, 6)
+	}
+}
+
+func BenchmarkReverseArray(b *testing.B) {
+	for i:=0; i<b.N; i++ {
+		var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
+		ReverseArray(a, 5)
+	}
+}
+
+func BenchmarkReverseArrayBlock(b *testing.B) {
+	for i:=0; i<b.N; i++ {
+		var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
+		ReverseArrayBlock(a, 5)
+	}
+}
