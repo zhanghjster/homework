@@ -12,17 +12,17 @@ func ReverseArray(nums []int, d int) {
 	} else {
 		d = -d %len(nums)
 	}
-	Reverse(nums, 0, d-1, d)
-	Reverse(nums, d, len(nums) - 1,  len(nums) - d)
-	Reverse(nums, 0, len(nums) - 1, len(nums))
+	Reverse(nums[:d])
+	Reverse(nums[d:])
+	Reverse(nums)
 }
 
-func Reverse(arr []int, start, end, d int) {
-	for ;d > 0;d-- {
+func Reverse(arr []int) {
+	var start, end = 0, len(arr) - 1
+	for start < end{
 		arr[start], arr[end] = arr[end], arr[start]
 		start++
 		end--
-		d--
 	}
 }
 

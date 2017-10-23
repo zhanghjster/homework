@@ -87,3 +87,10 @@ func BenchmarkReverseArray(b *testing.B) {
 		ReverseArray(a, 5)
 	}
 }
+
+func BenchmarkReverseArrayBlock(b *testing.B) {
+	for i:=0; i<b.N; i++ {
+		var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
+		ReverseArrayBlock(a, 5)
+	}
+}
