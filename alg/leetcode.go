@@ -22,18 +22,18 @@ func SearchInReversedSortedArray(nums []int, n int) int {
 // {4,5,6,1,2,3}
 func FindPivot(nums []int, start, end int) int {
 	println(start, end)
-	if len(nums) == 2 {
+	if end - start == 1 {
 		return start
 	}
 
-	var i = (end-start)/2
+	var i = (end+start)/2
 
 	if nums[start] < nums[i]{
-		return FindPivot(nums, start + i, end)
+		return FindPivot(nums, i, end)
 	}
 
 	if nums[start] > nums[i] {
-		return FindPivot(nums, start, start + i)
+		return FindPivot(nums, start, i)
 	}
 
 	return -1

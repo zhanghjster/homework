@@ -75,7 +75,7 @@ func TestRotateBlockSwap(t *testing.T) {
 }
 
 func TestFindPivot(t *testing.T) {
-	var a = []int{4,5,6,1,2,3}
+	var a = []int{4,5,6,7,0,1,2,3}
 	t.Log(FindPivot(a, 0, len(a)-1))
 }
 
