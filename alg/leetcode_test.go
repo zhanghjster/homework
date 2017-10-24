@@ -64,7 +64,7 @@ func TestRotateJuggling(t *testing.T) {
 
 func TestRotateReverse(t *testing.T) {
 	var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
-	RotateReverse(a, 6)
+	RotateReverse(a, 3)
 	t.Logf("%v", a)
 }
 
@@ -72,6 +72,11 @@ func TestRotateBlockSwap(t *testing.T) {
 	var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
 	RotateBlockSwap(a, 9)
 	t.Logf("%v", a)
+}
+
+func TestFindPivot(t *testing.T) {
+	var a = []int{4,5,6,1,2,3}
+	t.Log(FindPivot(a, 0, len(a)-1))
 }
 
 func BenchmarkRotateJuggling(b *testing.B) {

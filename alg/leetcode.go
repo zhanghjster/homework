@@ -6,9 +6,43 @@ import (
 	"sort"
 )
 
-// 将数组nums前d个元素翻转到尾部
+// 一个有序数组翻转过后搜索出其中一个元素的索引， 假设数组里没有重复元素
+// An element in a sorted array can be found in O(log n) time via binary search.
+// But suppose we rotate an ascending order sorted array at some pivot unknown to you beforehand.
+// So for instance, 1 2 3 4 5 might become 3 4 5 1 2.
+// Devise a way to find an element in the rotated array in O(log n) time.
+// 1. 找到最大的元素所在位置
+// 2. 用最大元素将数组分割成两块，在要寻找元素落入的那个块里查找
+func SearchInReversedSortedArray(nums []int, n int) int {
+
+	 return -1
+}
+
+// 返回最大元素的的位置
+// {4,5,6,1,2,3}
+func FindPivot(nums []int, start, end int) int {
+	println(start, end)
+	if len(nums) == 2 {
+		return start
+	}
+
+	var i = (end-start)/2
+
+	if nums[start] < nums[i]{
+		return FindPivot(nums, start + i, end)
+	}
+
+	if nums[start] > nums[i] {
+		return FindPivot(nums, start, start + i)
+	}
+
+	return -1
+}
+
+
+// 将数组nums后d个元素翻转到尾部
 // {1，2，3，4，5，6，7}的前3个元素翻转到尾部后
-// {4，5，6，7，1，2，3}
+// {5，6，7，1，2，3，4}
 func RotateReverse(nums []int, d int) {
 	if d > 0 {
 		d = len(nums) - d%len(nums)
@@ -28,6 +62,9 @@ func reverse(nums []int) {
 	}
 }
 
+// 将数组nums前d个元素翻转到尾部
+// {1，2，3，4，5，6，7}的前3个元素翻转到尾部后
+// {4，5，6，7，1，2，3}
 func RotateBlockSwap(nums []int, d int) {
 	var left, right = d, len(nums) - d
 
