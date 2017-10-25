@@ -6,27 +6,173 @@ import (
 	"sort"
 )
 
-// 一个有序数组翻转过后搜索出其中一个元素的索引， 假设数组里没有重复元素
-// An element in a sorted array can be found in O(log n) time via binary search.
-// But suppose we rotate an ascending order sorted array at some pivot unknown to you beforehand.
-// So for instance, 1 2 3 4 5 might become 3 4 5 1 2.
-// Devise a way to find an element in the rotated array in O(log n) time.
+// 将数组用low,high分成三段，
+// 小于low的在最左边，
+// 大于high的在最右边
+// 其他在中间
+// 不必考虑顺序
+//
+// 朴素的办法是排序，时间复杂度为O(nlogn)
+// 可是使用Dutch National Flag算法O(n)
+// 1. 三个指针start, cur, end
+// 	start指向小于low的元素的最大的索引
+// 	cur 指向当前要检查的元素
+// 	end 指向大于high的元素的最低索引
+//
+// 2. start从-1开始，cur0开始，当cur小于low时start++，
+// 	与cur指向的元素互换,之后cur指向下一个元素，
+// 	因为此时cur左边的元素一定是小于high的
+//
+// 3. end从数组长度开始，cur大于high时，end--
+//  与cur指向元素互换，因为不能保证现在的cur元素是否<low
+//  需要再与low检查一次
+func ReArrangeThreeWay(nums []int, low, high int) {
+	var start, cur, end = -1, 0, len(nums)
+	for cur < end {
+		v := nums[cur]
+		if v < low {
+			start++
+			nums[start], nums[cur] = nums[cur], nums[start]
+			// cur的左边是已经处理过的元素，cur需要指向下一个
+			cur++
+		} else if  v > high {
+			end--
+			nums[end], nums[cur] = nums[cur], nums[end]
+			// cur 有可能是小于low，需要再检查一次
+		} else {
+			cur++
+		}
+	}
+}
+
+// 一个数组由正负数组成，将正负数在数组中分成左右两个集合
+// 但负数之间，正数之间的原有顺序不能改变
+// {-1, 2, 3, -4, 5, -6} 转化为 {-1, -4, -6, 2, 3, 5}
+// 要求时空间复杂度O(1)
+func ReArrangePosNeg(nums []int) {
+	if len(nums) < 2 {
+		return
+	}
+
+	// 使用插入排序的变种，以0为枢纽元
+	for i:=1; i<len(nums); i++ {
+		v := nums[i]
+
+		if v > 0 {
+			continue
+		}
+
+		j := i - 1
+		// 将i之前的正数右移
+		for j >= 0 && nums[j] >= 0 {
+			nums[j+1] = nums[j]
+			j--
+		}
+
+		nums[j+1] = v
+	}
+}
+
+func ReArrangePosNegExtraSpace(nums []int) {
+	var tmp = []int{}
+	var i, j int
+	for i < len(nums){
+		if nums[i] < 0 {
+			nums[j] = nums[i]
+			j++
+		} else {
+			tmp = append(tmp, nums[i])
+		}
+		i++
+	}
+
+	copy(nums[j:], tmp)
+}
+
+
+// 一个数组由正负数组成，要求将正负元素间隔重新排列
+// 如果负数多，则多余的负数排在后面
+// 如果正数多，则多余的证书排在后面
+// {-1,2,3,-2,-4,5,6,7}重新排列后
+// {-1,2,-2,3,-4,5,6,7}
+// 要求时间复杂度O(n), 空间复杂度O(1)
+// 步骤:
+// 1. 用快速排序的办法将正负数分开
+// 2. 负数隔位与每个正数交换
+func ReArrangeArray(nums []int) {
+	// 以0位枢纽元分割array
+	var i, j = -1, len(nums)
+	for {
+		for i++; nums[i] < 0; i++ {}
+		for j--; nums[j] > 0; j-- {}
+		if i >= j {
+			break
+		}
+		nums[i], nums[j] = nums[j], nums[i]
+	}
+
+	// i 正数最小位置
+	// j 负数最大位置
+	var k = 1
+	for nums[k] < 0 && i < len(nums){
+		nums[k], nums[i] = nums[i], nums[k]
+		k += 2
+		i++
+	}
+}
+
+// 在一个没有重复元素的经过翻转升序数组查找某个数字的位置，
+// 如果不存在就返回 -1
+// 步骤:
 // 1. 找到最大的元素所在位置
 // 2. 用最大元素将数组分割成两块，在要寻找元素落入的那个块里查找
 func SearchInReversedSortedArray(nums []int, n int) int {
+	var start, end = 0, len(nums) - 1
+	var p int
+	if p = FindPivot(nums, start, end); p == -1 {
+		return -1
+	}
 
-	 return -1
+	if n >= nums[0] {
+		return BinarySearch(nums, 0, p, n)
+	}
+
+	if n < nums[0] {
+		return BinarySearch(nums, p+1, end, n)
+	}
+
+	return -1
 }
-
-// 返回最大元素的的位置
-// {4,5,6,1,2,3}
-func FindPivot(nums []int, start, end int) int {
-	println(start, end)
-	if end - start == 1 {
+// 升序数组中查找一个元素
+func BinarySearch(nums []int, start, end, n int) int {
+	if start == end && nums[start] == n {
 		return start
 	}
 
-	var i = (end+start)/2
+	if start < end {
+		i := (start + end)/2
+		if nums[i] < n {
+			return BinarySearch(nums, i+1, end, n)
+		} else {
+			return BinarySearch(nums, start, i, n)
+		}
+	}
+
+	return -1
+}
+
+// 在翻转过的升序数组里找到最大元素的的位置
+// {4,5,6,1,2,3}
+func FindPivot(nums []int, start, end int) int {
+	if end - start == 1 {
+		if nums[end] > nums[start] {
+			return end
+		} else {
+			return start
+		}
+	}
+
+	var i = (start + end)/2
 
 	if nums[start] < nums[i]{
 		return FindPivot(nums, i, end)

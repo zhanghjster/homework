@@ -74,15 +74,85 @@ func TestRotateBlockSwap(t *testing.T) {
 	t.Logf("%v", a)
 }
 
+func TestSearchInReversedSortedArray(t *testing.T) {
+	assert.Equal(t, 0, SearchInReversedSortedArray(
+		[]int{5,6,7,1,2,3,4}, 5,
+	))
+	assert.Equal(t, 2, SearchInReversedSortedArray(
+		[]int{5,6,7,1,2,3,4}, 7,
+	))
+	assert.Equal(t, 3, SearchInReversedSortedArray(
+		[]int{5,6,7,1,2,3,4}, 1,
+	))
+	assert.Equal(t, 0, SearchInReversedSortedArray(
+		[]int{1,2,3,4,5,6,7}, 1,
+	))
+	assert.Equal(t, 6, SearchInReversedSortedArray(
+		[]int{1,2,3,4,5,6,7}, 7,
+	))
+}
+
+func TestBinarySearch(t *testing.T) {
+	assert.Equal(t, 0, BinarySearch([]int{1,2,3,4,5}, 0, 4, 1))
+	assert.Equal(t, 4, BinarySearch([]int{1,2,3,4,5}, 0, 4, 5))
+	assert.Equal(t, -1, BinarySearch([]int{1,2,3,4,5}, 0, 4, 6))
+	assert.Equal(t, -1, BinarySearch([]int{1,2,3,4,5}, 0, 4, 0))
+}
+
 func TestFindPivot(t *testing.T) {
-	var a = []int{4,5,6,7,0,1,2,3}
-	t.Log(FindPivot(a, 0, len(a)-1))
+	assert.Equal(t, 0, FindPivot([]int{5,4,3,2,1}, 0, 4))
+	assert.Equal(t, 4, FindPivot([]int{1,2,3,4,5}, 0, 4))
+	assert.Equal(t, 1, FindPivot([]int{4,5,1,2,3}, 0, 4))
+	assert.Equal(t, 3, FindPivot([]int{2,3,4,5,1}, 0, 4))
+}
+
+func TestReArrangeArray(t *testing.T) {
+	var a = []int{-1,-2,-3,-4,-5,-6,1,2,3}
+	ReArrangeArray(a)
+	var b = []int{-1,-2,-3,4,5,6,1,2,3}
+	ReArrangeArray(b)
+	t.Logf("%v", b)
+	var c = []int{-1,-2,-3,4,5,6}
+	ReArrangeArray(c)
+	t.Logf("%v", c)
+}
+
+func TestReArrangePosNeg(t *testing.T) {
+	var a = []int{-1,2,-3,4,-5,6}
+	ReArrangePosNeg(a)
+	assert.ObjectsAreEqual([]int{-1,-3,-6, 2, 4, 5}, a)
+}
+
+func TestReArrangePosNegExtraSpace(t *testing.T) {
+	var a = []int{-1,2,-3,4,-5,6}
+	ReArrangePosNegExtraSpace(a)
+	assert.ObjectsAreEqual([]int{-1,-3,-6, 2, 4, 5}, a)
+}
+
+func TestReArrangeThreeWay(t *testing.T) {
+	var a = []int{10,3,5,6,2,4,8,1,9,7}
+	ReArrangeThreeWay(a, 4, 6)
+	t.Log(a)
+}
+
+func BenchmarkReArrangePosNeg(b *testing.B) {
+	for i:=0; i<b.N; i++ {
+		var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
+		RotateJuggling(a, 6)
+	}
 }
 
 func BenchmarkRotateJuggling(b *testing.B) {
 	for i:=0; i<b.N; i++ {
-		var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
-		RotateJuggling(a, 6)
+		var a = []int{-1,2,-3,4,-5,6}
+		ReArrangePosNeg(a)
+	}
+}
+
+func BenchmarkReArrangePosNegExtraSpace(b *testing.B) {
+	for i:=0; i<b.N; i++ {
+		var a = []int{-1,2,-3,4,-5,6}
+		ReArrangePosNegExtraSpace(a)
 	}
 }
 
