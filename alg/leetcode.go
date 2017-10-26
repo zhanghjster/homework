@@ -335,6 +335,62 @@ type ListNode struct {
 	Next *ListNode
 }
 
+func frontPushList(list *ListNode, v int) *ListNode {
+	return &ListNode{
+		Val: v,
+		Next: list,
+	}
+}
+
+func printList(list *ListNode) {
+	for list != nil {
+		println(list.Val)
+		list = list.Next
+	}
+}
+
+// has: 是否有环
+// size: 环的大小
+// start: 环入口到链表头的距离
+func  FloydCycleDetect(list *ListNode) (has bool, size, start int) {
+	start = -1
+
+	// 环中相遇节点
+	var m *ListNode
+
+	// h 快指针， t慢指针
+	var h, t = list, list
+	for t != nil && h != nil && h.Next != nil {
+		t = t.Next
+		h = h.Next.Next
+
+		// 环中相遇
+		if h == t {
+			m = h
+			has = true
+			break
+		}
+	}
+
+	if has {
+		h = list
+		// h,t 再次相遇时所走路程为环入口处距离
+		for start++;h != t; start++{
+			t = t.Next
+			h = h.Next
+		}
+
+		// t从相遇点前进再回到相遇点所走路径为环大小
+		t = m.Next
+		for size++; t != m; size++ {
+			t = t.Next
+		}
+	}
+
+	return
+}
+
+
 func AddTwoSingly(l1, l2 *ListNode) *ListNode {
 	var h = &ListNode{}
 	var e = h

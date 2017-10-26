@@ -135,6 +135,48 @@ func TestReArrangeThreeWay(t *testing.T) {
 	t.Log(a)
 }
 
+func TestFloydCycleDetect(t *testing.T) {
+	var list = new(ListNode)
+	var tail = list
+	var e *ListNode // 环的入口点
+	for i := 1; i < 8; i++ {
+		list = frontPushList(list, i)
+		if i == 5 {
+			e = list
+		}
+	}
+
+	// 7->6->5->4->3->2->1
+	hasCycle, size, start := FloydCycleDetect(list)
+	assert.False(t, hasCycle)
+	assert.Equal(t, 0, size)
+	assert.Equal(t, -1, start)
+
+	tail.Next = e
+	//       0<-1<-2
+	//       |     |
+	// 7->6->5->4->3
+	hasCycle, size, start = FloydCycleDetect(list)
+	assert.True(t, hasCycle)
+	assert.Equal(t, 6, size)
+	assert.Equal(t, 2, start)
+
+	// first <-> second
+	first, second := new(ListNode), new(ListNode)
+	first.Next, second.Next = second, first
+	hasCycle, size, start = FloydCycleDetect(first)
+	assert.True(t, hasCycle)
+	assert.Equal(t, 2, size)
+	assert.Equal(t, 0, start)
+
+	first.Next = first
+
+	hasCycle, size, start = FloydCycleDetect(first)
+	assert.True(t, hasCycle)
+	assert.Equal(t, 1, size)
+	assert.Equal(t, 0, start)
+}
+
 func BenchmarkReArrangePosNeg(b *testing.B) {
 	for i:=0; i<b.N; i++ {
 		var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
