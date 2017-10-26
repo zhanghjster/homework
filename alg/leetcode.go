@@ -35,7 +35,7 @@ func ReArrangeThreeWay(nums []int, low, high int) {
 			nums[start], nums[cur] = nums[cur], nums[start]
 			// cur的左边是已经处理过的元素，cur需要指向下一个
 			cur++
-		} else if  v > high {
+		} else if v > high {
 			end--
 			nums[end], nums[cur] = nums[cur], nums[end]
 			// cur 有可能是小于low，需要再检查一次
@@ -55,7 +55,7 @@ func ReArrangePosNeg(nums []int) {
 	}
 
 	// 使用插入排序的变种，以0为枢纽元
-	for i:=1; i<len(nums); i++ {
+	for i := 1; i < len(nums); i++ {
 		v := nums[i]
 
 		if v > 0 {
@@ -76,7 +76,7 @@ func ReArrangePosNeg(nums []int) {
 func ReArrangePosNegExtraSpace(nums []int) {
 	var tmp = []int{}
 	var i, j int
-	for i < len(nums){
+	for i < len(nums) {
 		if nums[i] < 0 {
 			nums[j] = nums[i]
 			j++
@@ -88,7 +88,6 @@ func ReArrangePosNegExtraSpace(nums []int) {
 
 	copy(nums[j:], tmp)
 }
-
 
 // 一个数组由正负数组成，要求将正负元素间隔重新排列
 // 如果负数多，则多余的负数排在后面
@@ -103,8 +102,10 @@ func ReArrangeArray(nums []int) {
 	// 以0位枢纽元分割array
 	var i, j = -1, len(nums)
 	for {
-		for i++; nums[i] < 0; i++ {}
-		for j--; nums[j] > 0; j-- {}
+		for i++; nums[i] < 0; i++ {
+		}
+		for j--; nums[j] > 0; j-- {
+		}
 		if i >= j {
 			break
 		}
@@ -114,7 +115,7 @@ func ReArrangeArray(nums []int) {
 	// i 正数最小位置
 	// j 负数最大位置
 	var k = 1
-	for nums[k] < 0 && i < len(nums){
+	for nums[k] < 0 && i < len(nums) {
 		nums[k], nums[i] = nums[i], nums[k]
 		k += 2
 		i++
@@ -143,6 +144,7 @@ func SearchInReversedSortedArray(nums []int, n int) int {
 
 	return -1
 }
+
 // 升序数组中查找一个元素
 func BinarySearch(nums []int, start, end, n int) int {
 	if start == end && nums[start] == n {
@@ -150,7 +152,7 @@ func BinarySearch(nums []int, start, end, n int) int {
 	}
 
 	if start < end {
-		i := (start + end)/2
+		i := (start + end) / 2
 		if nums[i] < n {
 			return BinarySearch(nums, i+1, end, n)
 		} else {
@@ -164,7 +166,7 @@ func BinarySearch(nums []int, start, end, n int) int {
 // 在翻转过的升序数组里找到最大元素的的位置
 // {4,5,6,1,2,3}
 func FindPivot(nums []int, start, end int) int {
-	if end - start == 1 {
+	if end-start == 1 {
 		if nums[end] > nums[start] {
 			return end
 		} else {
@@ -172,9 +174,9 @@ func FindPivot(nums []int, start, end int) int {
 		}
 	}
 
-	var i = (start + end)/2
+	var i = (start + end) / 2
 
-	if nums[start] < nums[i]{
+	if nums[start] < nums[i] {
 		return FindPivot(nums, i, end)
 	}
 
@@ -185,7 +187,6 @@ func FindPivot(nums []int, start, end int) int {
 	return -1
 }
 
-
 // 将数组nums后d个元素翻转到尾部
 // {1，2，3，4，5，6，7}的前3个元素翻转到尾部后
 // {5，6，7，1，2，3，4}
@@ -193,7 +194,7 @@ func RotateReverse(nums []int, d int) {
 	if d > 0 {
 		d = len(nums) - d%len(nums)
 	} else {
-		d = -d %len(nums)
+		d = -d % len(nums)
 	}
 	reverse(nums[:d])
 	reverse(nums[d:])
@@ -201,7 +202,7 @@ func RotateReverse(nums []int, d int) {
 }
 func reverse(nums []int) {
 	var start, end = 0, len(nums) - 1
-	for start < end{
+	for start < end {
 		nums[start], nums[end] = nums[end], nums[start]
 		start++
 		end--
@@ -228,7 +229,7 @@ func RotateBlockSwap(nums []int, d int) {
 	if left > right {
 		swap(nums, right)
 		// d = Al = left - right
-		RotateBlockSwap(nums[right:], left - right)
+		RotateBlockSwap(nums[right:], left-right)
 	}
 
 	// ABlBr = BrBlA => BlBrA
@@ -239,7 +240,7 @@ func RotateBlockSwap(nums []int, d int) {
 	}
 }
 
-func swap(nums[]int, d int) {
+func swap(nums []int, d int) {
 	var s1, s2 = 0, len(nums) - d
 	for s1 < d {
 		nums[s1], nums[s2] = nums[s2], nums[s1]
@@ -259,12 +260,12 @@ func RotateJuggling(nums []int, d int) {
 	//  = (a*g)*(b*g)/d
 	//  = a*g
 	//  = n
-	for i:=0; i < gcd(n, d); i++ {
+	for i := 0; i < gcd(n, d); i++ {
 		var tmp = nums[i]
 		j := i
 		// LCM(n,d)/d
 		for {
-			k := j+d
+			k := j + d
 			if k >= n {
 				k -= n
 			}
@@ -301,7 +302,7 @@ func gcd(a, b int) int {
 //
 func RemoveElement(nums []int, val int) int {
 	var ret int
-	for i := 0; i < len(nums) ;i++ {
+	for i := 0; i < len(nums); i++ {
 		if nums[i] != val {
 			nums[ret] = nums[i]
 			ret++
@@ -337,7 +338,7 @@ type ListNode struct {
 
 func frontPushList(list *ListNode, v int) *ListNode {
 	return &ListNode{
-		Val: v,
+		Val:  v,
 		Next: list,
 	}
 }
@@ -352,7 +353,7 @@ func printList(list *ListNode) {
 // has: 是否有环
 // size: 环的大小
 // start: 环入口到链表头的距离
-func  FloydCycleDetect(list *ListNode) (has bool, size, start int) {
+func FloydCycleDetect(list *ListNode) (has bool, size, start int) {
 	start = -1
 
 	// 环中相遇节点
@@ -375,7 +376,7 @@ func  FloydCycleDetect(list *ListNode) (has bool, size, start int) {
 	if has {
 		h = list
 		// h,t 再次相遇时所走路程为环入口处距离
-		for start++;h != t; start++{
+		for start++; h != t; start++ {
 			t = t.Next
 			h = h.Next
 		}
@@ -389,7 +390,6 @@ func  FloydCycleDetect(list *ListNode) (has bool, size, start int) {
 
 	return
 }
-
 
 func AddTwoSingly(l1, l2 *ListNode) *ListNode {
 	var h = &ListNode{}
@@ -523,7 +523,7 @@ func LongestPalindrome(s string) string {
 	for j := 0; j < len(s)-1; j++ {
 		// 以j和j+1为中心
 		i, k := j, j+1
-		for i>=0 && k < len(s) && s[i] == s[k] {
+		for i >= 0 && k < len(s) && s[i] == s[k] {
 			if k-i > q-p {
 				q, p = k, i
 			}
@@ -533,7 +533,7 @@ func LongestPalindrome(s string) string {
 
 		// 以j为中心
 		i, k = j-1, j+1
-		for i>=0 && k < len(s) && s[i] == s[k] {
+		for i >= 0 && k < len(s) && s[i] == s[k] {
 			if k-i > q-p {
 				q, p = k, i
 			}
@@ -542,7 +542,7 @@ func LongestPalindrome(s string) string {
 		}
 	}
 
-	return s[p:q+1]
+	return s[p : q+1]
 }
 
 // 负数都不是回文的
@@ -596,33 +596,33 @@ func ThreeSum(nums []int) [][]int {
 	sort.Ints(nums)
 
 	var res = [][]int{}
-	for i:=0; i< len(nums) - 2; i++ {
+	for i := 0; i < len(nums)-2; i++ {
 		if i > 0 && nums[i] == nums[i-1] {
 			continue
 		}
 
 		var j = i + 1
-		var k = len(nums)-1
+		var k = len(nums) - 1
 		for j < k {
 			if j != i+1 && nums[j] == nums[j-1] {
 				j++
 				continue
 			}
 
-			if k != len(nums) - 1 && nums[k] == nums[k+1] {
+			if k != len(nums)-1 && nums[k] == nums[k+1] {
 				k--
 				continue
 			}
 
 			var p = nums[i] + nums[j] + nums[k]
 			switch {
-			case p == 0 :
+			case p == 0:
 				res = append(res, []int{nums[i], nums[j], nums[k]})
 				k--
 				j++
 			case p > 0:
 				k--
-			case p <  0:
+			case p < 0:
 				j++
 			}
 		}
@@ -636,7 +636,7 @@ func myAtoi(str string) int {
 
 	// 去掉首部无效字符
 	for len(str) > 0 &&
-		!(str[0] == '+' || str[0] == '-' || (str[0]>='0' && str[0] >='9')) {
+		!(str[0] == '+' || str[0] == '-' || (str[0] >= '0' && str[0] >= '9')) {
 		str = str[1:]
 	}
 
@@ -663,13 +663,13 @@ func myAtoi(str string) int {
 		}
 	}
 
-	for i:= 0; i<len(str); i++ {
+	for i := 0; i < len(str); i++ {
 		var pre = ret
 		var v int
 		switch base {
 		case 16:
 			if str[i] > 'A' {
-				v = int(str[i] - 'A') + 10
+				v = int(str[i]-'A') + 10
 			} else {
 				v = int(str[i] - '0')
 			}
@@ -684,13 +684,13 @@ func myAtoi(str string) int {
 		ret = base*ret + v
 
 		// 溢出为0
-		if  ret/base != pre {
+		if ret/base != pre {
 			return 0
 		}
 	}
 
 	if neg {
-		ret = - ret
+		ret = -ret
 	}
 
 	return ret
