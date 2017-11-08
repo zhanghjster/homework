@@ -5,7 +5,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-
 func TestLongestCommonSequence(t *testing.T) {
 	var x, y = "ABCBDAB", "BDCABA"
 	assert.Equal(t, "BCBA", LongestCommonSequence(x, y))
@@ -60,4 +59,10 @@ func TestLengthOfLAS(t *testing.T) {
 	assert.Equal(t, 6, LengthOfLAS([]int{8, 9, 6, 4, 5, 7, 3, 2, 4}))
 	assert.Equal(t, 6, LengthOfLAS([]int{10, 22, 9, 33, 49, 50, 31, 60}))
 }
->>>>>>> 6ac4c74d3005170dafefd2486b3913dc0746c14d
+
+func TestMinNumOfCoins(t *testing.T) {
+	var c = []int{1,2,5,10}
+	assert.Equal(t, 1, MinNumOfCoins(c, 10))
+	assert.Equal(t, 2, MinNumOfCoins(c, 6))
+	assert.Equal(t, 3, MinNumOfCoins(c, 9))
+}

@@ -2,8 +2,23 @@ package alg
 
 // dynamic programing
 // 用最少的硬币找零
-func MinNumOfCoins(coins []int, n int) (min int) {
+func MinNumOfCoins(coins []int, n int) int {
+	var r = make([]int, n+1)
+	for i := 1; i <= n; i++ {
+		r[i] = n + 1
+		for _, c := range coins {
+			if c <= i && r[i-c] < r[i] {
+				r[i] = r[i-c]
+			}
+		}
+		r[i]++
+	}
 
+	if r[n] > n {
+		return -1
+	}
+
+	return r[n]
 }
 
 func LengthOfLAS(nums []int) (n int) {
@@ -14,7 +29,7 @@ func LengthOfLAS(nums []int) (n int) {
 	}
 
 	var up = nums[0] >= nums[1]
-	for i:=0; i < len(nums)-1; i++ {
+	for i := 0; i < len(nums)-1; i++ {
 		if (up && nums[i] > nums[i+1]) || (!up && nums[i] < nums[i+1]) {
 			n++
 			up = !up
@@ -199,4 +214,3 @@ func LongestRepeatedSubsequence(x string) string {
 	return string(b)
 
 }
->>>>>>> 6ac4c74d3005170dafefd2486b3913dc0746c14d
