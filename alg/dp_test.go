@@ -55,5 +55,7 @@ func TestLongestIncreasingSubsequence(t *testing.T) {
 func TestLengthOfLAS(t *testing.T) {
 	assert.Equal(t, 3, LengthOfLAS([]int{1,5,4}))
 	assert.Equal(t, 2, LengthOfLAS([]int{1,4,5}))
+	assert.Equal(t, 1, LengthOfLAS([]int{1,1,1,1,1,1,1}))
+	assert.Equal(t, 6, LengthOfLAS([]int{8, 9, 6, 4, 5, 7, 3, 2, 4}))
 	assert.Equal(t, 6, LengthOfLAS([]int{10, 22, 9, 33, 49, 50, 31, 60}))
 }

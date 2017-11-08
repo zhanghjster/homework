@@ -1,9 +1,18 @@
 package alg
 
 // dynamic programing
+// 用最少的硬币找零
+func MinNumOfCoins(coins []int, n int) (min int) {
+
+}
 
 func LengthOfLAS(nums []int) (n int) {
 	n = 1
+
+	if len(nums) < 2 {
+		return
+	}
+
 	var up = nums[0] >= nums[1]
 	for i:=0; i < len(nums)-1; i++ {
 		if (up && nums[i] > nums[i+1]) || (!up && nums[i] < nums[i+1]) {
