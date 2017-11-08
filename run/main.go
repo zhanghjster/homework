@@ -4,12 +4,10 @@ import (
 	"fmt"
 	"reflect"
 	"unsafe"
-
 )
 
 func main() {
-	var a = []int{1,2,3,4,5}
-	fmt.Println(a[1:1])
+
 }
 
 func InspectSlice(slice []int) {
