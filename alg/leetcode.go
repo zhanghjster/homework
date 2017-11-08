@@ -375,16 +375,13 @@ func FloydCycleDetect(list *ListNode) (has bool, size, start int) {
 
 	if has {
 		h = list
-		// h 指向链表头，t从环中相遇点开支向前移动
-		// 两个指针每次都移动一步
-		// 再次相遇时，h所走路程为环入口处距离
+		// h,t 再次相遇时所走路程为环入口处距离
 		for start++; h != t; start++ {
 			t = t.Next
 			h = h.Next
 		}
 
-		// t重新从环中相遇点前进
-		// 再回到相遇点所走路径为环大小
+		// t从相遇点前进再回到相遇点所走路径为环大小
 		t = m.Next
 		for size++; t != m; size++ {
 			t = t.Next
