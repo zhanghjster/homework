@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"reflect"
 	"unsafe"
-
 )
 
 func main() {
-
+	var s = "中c"
+	for i, v := range s[:] {
+		fmt.Printf("%d, %x\n", i, v)
+	}
 }
 
 func InspectSlice(slice []int) {
