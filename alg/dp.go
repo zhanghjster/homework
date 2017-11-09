@@ -1,7 +1,28 @@
 package alg
 
 // dynamic programing
+
+// count(c []int, n - c[m-1]) + count(c []int, c[0:m-1])
+//
+func ChangeOfCoins(coins []int, n int) int {
+
+	return 0
+}
+
 // 用最少的硬币找零
+// f(c[], n) = min(f(c[], n-c[0]),...,f(c[], n-c[len(c)-1]))
+// 举例 c = {1,2,5}, n = 10
+// f(0) = -1
+// f(1) = min(f(0)) + 1 = 1
+// f(2) = min(f(1), f(0)) + 1 = 1
+// f(3) = min(f(2), f(1)) + 1 = 2
+// f(4) = min(f(3), f(2)) + 1 = 2
+// f(5) = min(f(4), f(3), f(0)) + 1 = 1
+// f(6) = min(f(5), f(4), f(1)) + 1 = 2
+// f(7) = min(f(6), f(5), f(2)) + 1 = 2
+// f(8) = min(f(7), f(6), f(3)) + 1 = 3
+// f(9) = min(f(8), f(7), f(4)) + 1 = 3
+// f(10)= min(f(9), f(8), f(5)) + 1 = 2
 func MinNumOfCoins(coins []int, n int) int {
 	var r = make([]int, n+1)
 	for i := 1; i <= n; i++ {
@@ -21,22 +42,22 @@ func MinNumOfCoins(coins []int, n int) int {
 	return r[n]
 }
 
-func LengthOfLAS(nums []int) (n int) {
-	n = 1
-
+// 最长zigzag子序列
+func LengthOfLAS(nums []int) int {
+	var n = 1
 	if len(nums) < 2 {
-		return
+		return n
 	}
 
 	var up = nums[0] >= nums[1]
 	for i := 0; i < len(nums)-1; i++ {
-		if (up && nums[i] > nums[i+1]) || (!up && nums[i] < nums[i+1]) {
-			n++
+		if up != (nums[i] <= nums[i+1]) {
 			up = !up
+			n++
 		}
 	}
 
-	return
+	return n
 }
 
 // 给定一个整数数组，找到最长的递增子序列的长度

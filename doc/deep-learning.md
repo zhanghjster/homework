@@ -486,6 +486,64 @@ $$\\ softmax(x)_i = \frac{exp(x_i)}{\sum _{j=1}^nexp(x_j)}$$
 
 表示数据集的常用方法是设计矩阵，设计矩阵的每一行包含一个不同的样本，每一列对应不同的特征
 
+##### 线性回归
+
+建立一个系统将向量$x \in \mathbb{R}$ 作为输入，预测标量 $y \in \mathbb{R}$ 作为输出，线性回归的输出是输入的线性函数
+
+$$\\ \hat y = w^Tx$$ 
+
+其中 $w\in \mathbb{R}$ 是参数向量
+
+性能度量
+
+$$\\ MES_{test} = \frac{1}{n}\sum_i(\hat y^{(test)}- y^{(test)})^2$$
+
+通过最小化训练级上的方差来求解$w$ 为一个直观的模型
+
+机器学习的主要挑战是算法必须能够在先前未观测到的新输入上表现良好，这种能力成为泛化(generalization), 通常情况下，训练机器学习模型时，在某个训练集上计算一些被称为训练误差(training error)的度量误差，目的是降低训练误差。新的输入的误差的期望称为泛化误差(generalization error), 通常通过度量在训练集中分离出来的测试集上的性能来评估机器学习模型的泛化误差
+
+神经网络输入的是一个特征向量
+
+
+
+
+
+1,0,1,0,1,0, 0,
+
+5,9,8,7,0,1,3,8
+
+The string `"PAYPALISHIRING"` is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)
+
+```
+P   A   H   N
+A P L S I I G
+Y   I   R
+
+```
+
+And then read line by line: 
+
+```
+"PAHNAPLSIIGYIR"
+```
+
+Write the code that will take a string and make this conversion given a number of rows:
+
+```
+string convert(string text, int nRows);
+```
+
+
+
+
+
+Δ=        1                                 2n-1                  4n-3
+Δ=        2                  2n-2       2n           4n-4   4n-2
+Δ=        3                  2n-3       2n+1       4n-5     .
+Δ=        .                   .               .                 .         .
+Δ=        .                    n+2         .              3n        .
+Δ=        n-1               n+1                        3n-3   6n-1            
+Δ=        n                                 3n-2                   5n-4
 
 
 ### Latex
