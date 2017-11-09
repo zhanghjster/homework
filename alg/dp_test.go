@@ -66,3 +66,13 @@ func TestMinNumOfCoins(t *testing.T) {
 	assert.Equal(t, 2, MinNumOfCoins(c, 6))
 	assert.Equal(t, 3, MinNumOfCoins(c, 9))
 }
+
+func TestChangeOfCoins(t *testing.T) {
+	var c = []int{1,2,5}
+	assert.Equal(t, 13, ChangeOfCoins(c, 12))
+	assert.Equal(t, 4, ChangeOfCoins(c, 5))
+	assert.Equal(t, 29, ChangeOfCoins(c, 20))
+	c = []int{1,2,5,10}
+	assert.Equal(t, 11, ChangeOfCoins(c, 10))
+	assert.Equal(t, 40, ChangeOfCoins(c, 20))
+}

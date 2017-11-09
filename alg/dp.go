@@ -2,11 +2,29 @@ package alg
 
 // dynamic programing
 
-// count(c []int, n - c[m-1]) + count(c []int, c[0:m-1])
-//
+// count(c []int, n - c[m-1]) + count(c [0:m-1]int, n)
 func ChangeOfCoins(coins []int, n int) int {
+	m := len(coins)
+	var s = make([][]int, n + 1)
+	for i:=0; i < len(s); i++ {
+		s[i] = make([]int, m + 1)
+	}
 
-	return 0
+	for i:=0; i <= m; i++ {
+		s[0][i] = 1
+	}
+
+	for i:=1; i<=n; i++ {
+		for j:=1; j<=m; j++ {
+			if k := i - coins[j-1]; k >= 0 {
+				s[i][j] = s[i][j-1] + s[k][j]
+			} else {
+				s[i][j] = s[i][j-1]
+			}
+		}
+	}
+
+	return s[n][m]
 }
 
 // 用最少的硬币找零
