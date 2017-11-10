@@ -27,6 +27,23 @@ func ChangeOfCoins(coins []int, n int) int {
 	return s[n][m]
 }
 
+// 用一维数组存储临时数据
+func ChangeOfCoinsOptimized(coins []int, m int) int {
+	var dp = make([]int, m+1)
+
+	dp[0] = 1
+
+	for _, c := range coins {
+		for i:=1; i<= m; i++ {
+			if i >= c {
+				dp[i] += dp[i-c]
+			}
+		}
+	}
+
+	return dp[m]
+}
+
 // 用最少的硬币找零
 // f(c[], n) = min(f(c[], n-c[0]),...,f(c[], n-c[len(c)-1]))
 // 举例 c = {1,2,5}, n = 10
