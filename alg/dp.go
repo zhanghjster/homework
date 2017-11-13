@@ -3,7 +3,7 @@ package alg
 // dynamic programing
 
 // count(c []int, n - c[m-1]) + count(c [0:m-1]int, n)
-func ChangeOfCoins(coins []int, n int) int {
+func Changes(coins []int, n int) int {
 	m := len(coins)
 	var s = make([][]int, n + 1)
 	for i:=0; i < len(s); i++ {
@@ -28,7 +28,7 @@ func ChangeOfCoins(coins []int, n int) int {
 }
 
 // 用一维数组存储临时数据
-func ChangeOfCoinsOptimized(coins []int, m int) int {
+func ChangeOptimized(coins []int, m int) int {
 	var dp = make([]int, m+1)
 
 	dp[0] = 1
