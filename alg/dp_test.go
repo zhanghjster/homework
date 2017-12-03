@@ -68,6 +68,7 @@ func TestMinNumOfCoins(t *testing.T) {
 }
 
 func TestChangeOfCoins(t *testing.T) {
+<<<<<<< HEAD
 	var c = []int{1, 2, 5}
 	assert.Equal(t, 13, ChangeOfCoins(c, 12))
 	assert.Equal(t, 4, ChangeOfCoins(c, 5))
@@ -91,12 +92,43 @@ func BenchmarkChangeOfCoins(b *testing.B) {
 	var c = []int{1, 2, 5, 10}
 	for i := 0; i < b.N; i++ {
 		ChangeOfCoins(c, 40)
+=======
+	var c = []int{1,2,5}
+	assert.Equal(t, 13, Changes(c, 12))
+	assert.Equal(t, 4, Changes(c, 5))
+	assert.Equal(t, 29, Changes(c, 20))
+	c = []int{1,2,5,10}
+	assert.Equal(t, 11, Changes(c, 10))
+	assert.Equal(t, 40, Changes(c, 20))
+}
+
+func TestChangesOfCoinsOptimized(t *testing.T) {
+	var c = []int{1,2,5}
+	assert.Equal(t, 13, ChangeOptimized(c, 12))
+	assert.Equal(t, 4, ChangeOptimized(c, 5))
+	assert.Equal(t, 29, ChangeOptimized(c, 20))
+	c = []int{1,2,5,10}
+	assert.Equal(t, 11, ChangeOptimized(c, 10))
+	assert.Equal(t, 40, ChangeOptimized(c, 20))
+}
+
+func BenchmarkChangeOfCoins(b *testing.B) {
+	var c = []int{1,2,5, 10}
+	for i:=0; i< b.N; i++ {
+		Changes(c, 40)
+>>>>>>> 509933fe7f32b328e3de1417f25dd12f04f531d0
 	}
 }
 
 func BenchmarkChangeOfCoinsOptimized(b *testing.B) {
+<<<<<<< HEAD
 	var c = []int{1, 2, 5, 10}
 	for i := 0; i < b.N; i++ {
 		ChangeOfCoinsOptimized(c, 40)
+=======
+	var c = []int{1,2,5, 10}
+	for i:=0; i< b.N; i++ {
+		ChangeOptimized(c, 40)
+>>>>>>> 509933fe7f32b328e3de1417f25dd12f04f531d0
 	}
 }

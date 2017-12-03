@@ -22,7 +22,7 @@ AI需要具有在原始数据中提取模式的能力，这种能力成为机器
 
 机器学习首先要提取特征变差因素，在不可能人提取特征的情况下使用表示学习算法提取，但还有一些复杂的抽象无法用表示学习提取时，深度学习使用简单分层嵌套的方法来表示复杂的抽象
 
-#### 历史
+##### 历史
 
 控制论(cybernetics) => 连接主义(connectionism) => 深度学习(deap learning)
 
@@ -39,9 +39,7 @@ AI需要具有在原始数据中提取模式的能力，这种能力成为机器
 
 深度学习是机器学习的一种方法，在过去几十年的发展中，借鉴了关于人脑、统计学、应用数学的知识。得益于更强大的计算机、更大的数据集能够训练更深的额网络技术
 
-
-
-### 线性代数 
+##### 线性代数
 
 * 标量，一个单独的数
 * 向量，一列有序排列的数
@@ -189,23 +187,9 @@ AI需要具有在原始数据中提取模式的能力，这种能力成为机器
 
   假设A为一个$m \times n$ 的矩阵，U是一个$m \times m$ 矩阵，D是$m\times n$, V是 $n \times n$ ，D为对角矩阵，其对角线上的值为A的奇异值，U的列向量为左奇异向量，V的列向量为A的有奇异向量
 
-* ​
 
 
-
-http://blog.csdn.net/myan/article/details/649018
-
-https://www.zhihu.com/question/36966326/answer/70687817
-
-https://www.zhihu.com/question/21874816
-
-### 支持向量机(SupportVector Machine)
-
-目的是学会一个分类函数或者模型将数据库中的数据映射到某一个类。支持向量机是一个二分类分类模型，给定一个样本集合，他用一个超平面把样本进行分割成正反两类。这个超平面要尽最大努力正反之间的间隔最大，分类结果才更可信，对于未知新样本才更好的分类预测
-
-
-
-###概率与信息论
+##### 概率与信息论
 
 概率论使我们能够提出不确定性声明以及不确定性存在的情况下进行推理，信息论使我们能量化概率分布中不确定性的总量
 
@@ -339,9 +323,7 @@ $$\\ H(x) = \mathbb{E}_{x\sim P}[I(x)] = - \mathbb {E}_{x\sim P}[logP(x)]$$
 
 有向和无向
 
-###数值计算
-
-### 机器学习基础
+##### 机器学习基础
 
 
 分类与聚类的区别
@@ -407,7 +389,7 @@ $$\\ softmax(x)_i = \frac{exp(x_i)}{\sum _{j=1}^nexp(x_j)}$$
 
 数值计算的方法用于优化参数
 
-#### 机器学习
+##### 机器学习
 
 本质上是应用统计学，更多的关注如何用计算机统计地估计复杂函数，不太关注这些函数提供的置信区间，两种主要统计学方法，概率派估计和贝叶斯推断。大多数深度学习算法都是基于随机梯度下降的算法求解。
 
@@ -513,46 +495,23 @@ $$\\ bias(\hat{\theta_m}) = \mathbb{E}(\hat{\theta_m}) - \theta$$
 
 其中期望组用于所有数据上，$\theta$ 是用于定义数据生成分布的真实值
 
+ ##### 方差和标准差
 
+衡量估计值作为样本的函数，期望的变化程度
 
-1,0,1,0,1,0, 0,
+偏差度两者偏离真实函数或参数的误差，方差度量着数据上任意特定采样可能导致的估计期望的偏差
 
-5,9,8,7,0,1,3,8
+##### 最大似然估计
 
-The string `"PAYPALISHIRING"` is written in a zigzag pattern on a given number of rows like this: (you may want to display this pattern in a fixed font for better legibility)
+做点估计或函数估计的准则
 
-```
-P   A   H   N
-A P L S I I G
-Y   I   R
+估计的原则，最大似然法，衡量手段，偏差、方差、标准差
 
-```
+##### 贝叶斯统计
 
-And then read line by line: 
-
-```
-"PAHNAPLSIIGYIR"
-```
-
-Write the code that will take a string and make this conversion given a number of rows:
-
-```
-string convert(string text, int nRows);
-```
+概率派认为真实参数$\theta$是未知的定值，而点估计 $\hat{\theta}$ 是考虑数据及上的函数的随机变量。贝叶斯派认为概率反应只是状态的确定性程度，数据集能被直接观测到，因此不是随机的，而真实参数$\theta$是未知或不确定的，因此可以表示成随机变量
 
 
 
 
 
-Δ=        1                                 2n-1                  4n-3
-Δ=        2                  2n-2       2n           4n-4   4n-2
-Δ=        3                  2n-3       2n+1       4n-5     .
-Δ=        .                   .               .                 .         .
-Δ=        .                    n+2         .              3n        .
-Δ=        n-1               n+1                        3n-3   6n-1            
-Δ=        n                                 3n-2                   5n-4
-
-
-### Latex
-
-https://en.wikipedia.org/wiki/List_of_mathematical_symbols_by_subject#Probability_theory
