@@ -1,19 +1,19 @@
 package alg
 
 import (
-	"testing"
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestTwoSum(t *testing.T) {
-	var a = []int{2,3,9,11,3}
+	var a = []int{2, 3, 9, 11, 3}
 	var i, j = TwoSum(a, 11)
 	assert.Equal(t, i, 0)
 	assert.Equal(t, j, 2)
 }
 
 func TestRemoveElement(t *testing.T) {
-	var a = []int{1,2,3,2,5,2,3,6}
+	var a = []int{1, 2, 3, 2, 5, 2, 3, 6}
 	assert.Equal(t, RemoveElement(a, 2), 5)
 }
 func TestAddTwo(t *testing.T) {
@@ -46,9 +46,9 @@ func TestReverseInt(t *testing.T) {
 }
 
 func TestLongestPalindrome(t *testing.T) {
-	assert.Equal(t, LongestPalindrome("abcda"),"a")
-	assert.Equal(t, LongestPalindrome("abab"),"aba")
-	assert.Equal(t, LongestPalindrome("abba"),"abba")
+	assert.Equal(t, LongestPalindrome("abcda"), "a")
+	assert.Equal(t, LongestPalindrome("abab"), "aba")
+	assert.Equal(t, LongestPalindrome("abba"), "abba")
 }
 
 func TestGcd(t *testing.T) {
@@ -57,80 +57,80 @@ func TestGcd(t *testing.T) {
 }
 
 func TestRotateJuggling(t *testing.T) {
-	var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
+	var a = []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
 	RotateJuggling(a, 6)
 	t.Logf("%v", a)
 }
 
 func TestRotateReverse(t *testing.T) {
-	var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
+	var a = []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
 	RotateReverse(a, 3)
 	t.Logf("%v", a)
 }
 
 func TestRotateBlockSwap(t *testing.T) {
-	var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
+	var a = []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
 	RotateBlockSwap(a, 9)
 	t.Logf("%v", a)
 }
 
 func TestSearchInReversedSortedArray(t *testing.T) {
 	assert.Equal(t, 0, SearchInReversedSortedArray(
-		[]int{5,6,7,1,2,3,4}, 5,
+		[]int{5, 6, 7, 1, 2, 3, 4}, 5,
 	))
 	assert.Equal(t, 2, SearchInReversedSortedArray(
-		[]int{5,6,7,1,2,3,4}, 7,
+		[]int{5, 6, 7, 1, 2, 3, 4}, 7,
 	))
 	assert.Equal(t, 3, SearchInReversedSortedArray(
-		[]int{5,6,7,1,2,3,4}, 1,
+		[]int{5, 6, 7, 1, 2, 3, 4}, 1,
 	))
 	assert.Equal(t, 0, SearchInReversedSortedArray(
-		[]int{1,2,3,4,5,6,7}, 1,
+		[]int{1, 2, 3, 4, 5, 6, 7}, 1,
 	))
 	assert.Equal(t, 6, SearchInReversedSortedArray(
-		[]int{1,2,3,4,5,6,7}, 7,
+		[]int{1, 2, 3, 4, 5, 6, 7}, 7,
 	))
 }
 
 func TestBinarySearch(t *testing.T) {
-	assert.Equal(t, 0, BinarySearch([]int{1,2,3,4,5}, 0, 4, 1))
-	assert.Equal(t, 4, BinarySearch([]int{1,2,3,4,5}, 0, 4, 5))
-	assert.Equal(t, -1, BinarySearch([]int{1,2,3,4,5}, 0, 4, 6))
-	assert.Equal(t, -1, BinarySearch([]int{1,2,3,4,5}, 0, 4, 0))
+	assert.Equal(t, 0, BinarySearch([]int{1, 2, 3, 4, 5}, 0, 4, 1))
+	assert.Equal(t, 4, BinarySearch([]int{1, 2, 3, 4, 5}, 0, 4, 5))
+	assert.Equal(t, -1, BinarySearch([]int{1, 2, 3, 4, 5}, 0, 4, 6))
+	assert.Equal(t, -1, BinarySearch([]int{1, 2, 3, 4, 5}, 0, 4, 0))
 }
 
 func TestFindPivot(t *testing.T) {
-	assert.Equal(t, 0, FindPivot([]int{5,4,3,2,1}, 0, 4))
-	assert.Equal(t, 4, FindPivot([]int{1,2,3,4,5}, 0, 4))
-	assert.Equal(t, 1, FindPivot([]int{4,5,1,2,3}, 0, 4))
-	assert.Equal(t, 3, FindPivot([]int{2,3,4,5,1}, 0, 4))
+	assert.Equal(t, 0, FindPivot([]int{5, 4, 3, 2, 1}, 0, 4))
+	assert.Equal(t, 4, FindPivot([]int{1, 2, 3, 4, 5}, 0, 4))
+	assert.Equal(t, 1, FindPivot([]int{4, 5, 1, 2, 3}, 0, 4))
+	assert.Equal(t, 3, FindPivot([]int{2, 3, 4, 5, 1}, 0, 4))
 }
 
 func TestReArrangeArray(t *testing.T) {
-	var a = []int{-1,-2,-3,-4,-5,-6,1,2,3}
+	var a = []int{-1, -2, -3, -4, -5, -6, 1, 2, 3}
 	ReArrangeArray(a)
-	var b = []int{-1,-2,-3,4,5,6,1,2,3}
+	var b = []int{-1, -2, -3, 4, 5, 6, 1, 2, 3}
 	ReArrangeArray(b)
 	t.Logf("%v", b)
-	var c = []int{-1,-2,-3,4,5,6}
+	var c = []int{-1, -2, -3, 4, 5, 6}
 	ReArrangeArray(c)
 	t.Logf("%v", c)
 }
 
 func TestReArrangePosNeg(t *testing.T) {
-	var a = []int{-1,2,-3,4,-5,6}
+	var a = []int{-1, 2, -3, 4, -5, 6}
 	ReArrangePosNeg(a)
-	assert.ObjectsAreEqual([]int{-1,-3,-6, 2, 4, 5}, a)
+	assert.ObjectsAreEqual([]int{-1, -3, -6, 2, 4, 5}, a)
 }
 
 func TestReArrangePosNegExtraSpace(t *testing.T) {
-	var a = []int{-1,2,-3,4,-5,6}
+	var a = []int{-1, 2, -3, 4, -5, 6}
 	ReArrangePosNegExtraSpace(a)
-	assert.ObjectsAreEqual([]int{-1,-3,-6, 2, 4, 5}, a)
+	assert.ObjectsAreEqual([]int{-1, -3, -6, 2, 4, 5}, a)
 }
 
 func TestReArrangeThreeWay(t *testing.T) {
-	var a = []int{10,3,5,6,2,4,8,1,9,7}
+	var a = []int{10, 3, 5, 6, 2, 4, 8, 1, 9, 7}
 	ReArrangeThreeWay(a, 4, 6)
 	t.Log(a)
 }
@@ -178,36 +178,36 @@ func TestFloydCycleDetect(t *testing.T) {
 }
 
 func BenchmarkReArrangePosNeg(b *testing.B) {
-	for i:=0; i<b.N; i++ {
-		var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
+	for i := 0; i < b.N; i++ {
+		var a = []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
 		RotateJuggling(a, 6)
 	}
 }
 
 func BenchmarkRotateJuggling(b *testing.B) {
-	for i:=0; i<b.N; i++ {
-		var a = []int{-1,2,-3,4,-5,6}
+	for i := 0; i < b.N; i++ {
+		var a = []int{-1, 2, -3, 4, -5, 6}
 		ReArrangePosNeg(a)
 	}
 }
 
 func BenchmarkReArrangePosNegExtraSpace(b *testing.B) {
-	for i:=0; i<b.N; i++ {
-		var a = []int{-1,2,-3,4,-5,6}
+	for i := 0; i < b.N; i++ {
+		var a = []int{-1, 2, -3, 4, -5, 6}
 		ReArrangePosNegExtraSpace(a)
 	}
 }
 
 func BenchmarkRotateReverse(b *testing.B) {
-	for i:=0; i<b.N; i++ {
-		var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
+	for i := 0; i < b.N; i++ {
+		var a = []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
 		RotateReverse(a, 5)
 	}
 }
 
 func BenchmarkRotateBlockSwap(b *testing.B) {
-	for i:=0; i<b.N; i++ {
-		var a = []int{1,2,3,4,5,6,7,8,9,10,11,12}
+	for i := 0; i < b.N; i++ {
+		var a = []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12}
 		RotateBlockSwap(a, 5)
 	}
 }

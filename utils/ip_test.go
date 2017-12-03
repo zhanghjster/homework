@@ -6,7 +6,7 @@ import (
 
 func TestIp4ToInt(t *testing.T) {
 	var ip = "127.0.0.1"
-	var ex = uint32(0x7F << 24 + 1)
+	var ex = uint32(0x7F<<24 + 1)
 
 	i, err := Ip4ToInt(ip)
 	if err != nil {

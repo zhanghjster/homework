@@ -6,7 +6,7 @@ import (
 
 const (
 	MaxUint64 = ^uint64(0)
-	MaxInt64 = MaxUint64 >> 1
+	MaxInt64  = MaxUint64 >> 1
 )
 
 func IsPrimitive(n uint64) bool {
@@ -35,7 +35,7 @@ func EratosthenesSieve(n uint64) []uint64 {
 		if numbers[p] {
 			// enumerate the multiples of p from 2p to n in increment by p and mark them
 			// 遍历所有p的倍数并标记
-			for j := 2* p; j<=n; j += p {
+			for j := 2 * p; j <= n; j += p {
 				numbers[j] = false
 			}
 		}

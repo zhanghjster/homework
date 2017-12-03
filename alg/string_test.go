@@ -1,9 +1,9 @@
 package alg
 
 import (
-	"testing"
-	"strings"
 	"bytes"
+	"strings"
+	"testing"
 )
 
 var strList = []string{
@@ -18,22 +18,22 @@ var strList = []string{
 	"key9", "value9",
 }
 
-func BenchmarkStrAppendJoin(b *testing.B){
+func BenchmarkStrAppendJoin(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		var list = []string{}
-		for i:=0; i< len(strList); i+=2 {
-			list = append(list, strList[i] + "=" + strList[i+1])
+		var list []string
+		for i := 0; i < len(strList); i += 2 {
+			list = append(list, strList[i]+"="+strList[i+1])
 		}
 		strings.Join(list, "&")
 	}
 }
 
 func BenchmarkStrPlusConcat(b *testing.B) {
-	for i:=0; i< b.N; i++{
+	for i := 0; i < b.N; i++ {
 		var str string
-		for i:=0; i< len(strList); i+=2 {
+		for i := 0; i < len(strList); i += 2 {
 			var gap string
-			if i > 0  {
+			if i > 0 {
 				gap = "&"
 			}
 			str += gap + strList[i] + "=" + strList[i+1]
@@ -42,9 +42,9 @@ func BenchmarkStrPlusConcat(b *testing.B) {
 }
 
 func BenchmarkStrBuff(b *testing.B) {
-	for i:=0; i< b.N; i++ {
+	for i := 0; i < b.N; i++ {
 		var buf bytes.Buffer
-		for i:=0; i < len(strList); i+=2 {
+		for i := 0; i < len(strList); i += 2 {
 			if i > 0 {
 				buf.WriteByte('&')
 			}

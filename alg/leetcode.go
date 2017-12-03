@@ -74,7 +74,7 @@ func ReArrangePosNeg(nums []int) {
 }
 
 func ReArrangePosNegExtraSpace(nums []int) {
-	var tmp = []int{}
+	var tmp []int
 	var i, j int
 	for i < len(nums) {
 		if nums[i] < 0 {
@@ -446,9 +446,9 @@ func LengthOfLongestSubstring(s string) int {
 	}
 
 	// 最大长度
-	var max int = 0
+	var max = 0
 	// 上一次重复时的地址
-	var last int = -1
+	var last = -1
 	for i, c := range s {
 		// 实现两个目的
 		// 1. c 出现过
@@ -557,7 +557,7 @@ func PalindromeNumber(x int) bool {
 }
 
 func PowFloat(x float64, n int) float64 {
-	var r float64 = 1.0
+	var r = 1.0
 	if n < 0 {
 		n = -n
 		x = 1 / x
@@ -595,7 +595,7 @@ func ThreeSum(nums []int) [][]int {
 
 	sort.Ints(nums)
 
-	var res = [][]int{}
+	var res [][]int
 	for i := 0; i < len(nums)-2; i++ {
 		if i > 0 && nums[i] == nums[i-1] {
 			continue

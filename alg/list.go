@@ -1,7 +1,7 @@
 package alg
 
 type Item struct {
-	next *Item
+	next  *Item
 	value int
 }
 

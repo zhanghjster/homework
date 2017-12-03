@@ -7,7 +7,7 @@ func BruteForce(t, p string) int {
 		return -1
 	}
 
-	for i := 0; i <= len(t) - len(p); i++ {
+	for i := 0; i <= len(t)-len(p); i++ {
 		// 检查t从i开始len(p)的是否与p相等
 		if t[i:i+len(p)] == p {
 			return i
@@ -15,16 +15,16 @@ func BruteForce(t, p string) int {
 
 		// 更为原始的做法
 		/*
-		j := 0
-		for ;j<len(p);j++ {
-			if t[i+j] != p[j] {
-				break
+			j := 0
+			for ;j<len(p);j++ {
+				if t[i+j] != p[j] {
+					break
+				}
 			}
-		}
-		if j == len(p) {
-			return i
-		}
-		 */
+			if j == len(p) {
+				return i
+			}
+		*/
 	}
 
 	return -1

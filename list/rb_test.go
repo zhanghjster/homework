@@ -1,13 +1,13 @@
 package list
 
 import (
-	"testing"
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestRingBuffer_ReadWrite(t *testing.T) {
 
-	var src = []byte{'a','b','c','d','e'}
+	var src = []byte{'a', 'b', 'c', 'd', 'e'}
 	b := NewRingBuffer(7)
 
 	// write
@@ -26,7 +26,7 @@ func TestRingBuffer_ReadWrite(t *testing.T) {
 	assert.Equal(t, b.End(), len(src))
 
 	// write
-	_, err = b.Write([]byte{'f','g','h'})
+	_, err = b.Write([]byte{'f', 'g', 'h'})
 	assert.Nil(t, err)
 
 	// read

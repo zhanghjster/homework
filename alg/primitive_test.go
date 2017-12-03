@@ -23,5 +23,3 @@ func TestFindAllPrimitive(t *testing.T) {
 func BenchmarkFindAllPrimitive(b *testing.B) {
 	EratosthenesSieve(uint64(b.N))
 }
-
-
