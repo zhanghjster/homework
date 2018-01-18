@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"reflect"
 	"unsafe"
+	"time"
 )
 
 func main() {
-
+	fmt.Println(time.Now().Format("20060102"))
 }
 
 func InspectSlice(slice []int) {

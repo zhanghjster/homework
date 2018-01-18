@@ -210,11 +210,81 @@ a = tf.nn.relu(tf.matmul(x, w1) + biases1
 
 softmax层将神经网络的输出变成一个概率分布，也就是一个样例为不同类别的概率分别是多大
 
-$$\\ softmax(y)_i = y^{'}=\frac{e^{(yi)}}{\sum_{j=1}{^n}e^{yj}}$$
+$$\\  softmax(y)_i = y^{'}=\frac{e^{(yi)}}{\sum_{j=1}{^n}e^{yj}}$$
 
 这样就可以通过交叉熵计算来预测的概率分布和真实答案的概率分布之间的距离了
 
-$$\\H(p,q) = - \sum_xp(x)logq(x)​$$
+$$\\ H(p,q) = - \sum_xp(x)logq(x)$$
 
 p为代表正确答案，q代表预测答案
+
+由于交叉熵和softmax通常一起使用，所以TF将两个功能进行了统一封装
+
+```python
+cross_entropy = tf.nn.softmax_cross_entropy_with_logits(y, y_)
+```
+
+回归问题解决的是对具体数值的预测而不是类别。解决回归问题的神经网络一般只有一个输出节点，输出值为预测值。常用的损失函数为均方差(mean squared error)
+
+$$\\ MSE(y, y{'}) = \frac{\sum_{i=1}^n(y_i-y^{'}_i)^2 }{n}$$
+
+```python
+mse = tf.reduce_mean(tf.square(y_ - y))
+```
+
+##### 自定义损失函数
+
+##### 优化算法
+
+梯度下降算法(gradient decent)用于优化单个参数，反向传播算法(backpropagation)用于高效在所有参数上使用梯度下降算法优化
+
+##### 学习率
+
+为了避免学习率过大或过小，tf提供了指数衰减的学习率
+
+```python
+# decayed_learing_rate每一轮使用的学习率
+# learning_rate 初始学习率
+# decay_rate 衰减速度
+decayed_learning_rate = learning_rate * decay_rate ^ ( global_step / decay_steps)
+```
+
+举例
+
+```python
+glboal_step = tf.Variable(0)
+learning_rate = tf.train.exponential_decay(
+	0.1, global_step, 100, 0-.96, staircase=True	
+)
+learning_step = tf.train.GradientDescentOptimizer(learning_rate).minimize(...)
+```
+
+##### 过拟合
+
+模型过为复杂后，他很好的记忆了每一个训练数据中随机噪音的部分而忘记了要去学习的通用趋势，常用的办法是正则化(regularization)。采用的方法是在损失函数中加入刻画模型复杂度的指标,最终优化的是$J(\theta) + \lambda R(w)$其中$R(w)$刻画的模型的复杂度，有两种
+
+$L1$正则化
+
+$$\\ R(w) = \|w\|_1 = \sum_i|w_i|$$
+
+$L2$正则化
+
+$$\\ R(w) = \|w\|_2^2 = \sum_i|w_i^2|$$
+
+实践中也可以将$L1, L2$ 同时使用
+
+$$\\ R(w) = \sum_i\alpha|w_i|\ + (1-\alpha)w_i^2$$
+
+```python
+w = tf.Variable(tf.random_normal([2, 1], stddev=1, seed=1))
+y = tf.matmul(x, w)
+
+loss = tf.reduce_mean(tf.square(y_ - y)) + tf.contrib.layers.l2_regularizer(lambda)(w)
+```
+
+ ##### 滑动平均模型
+
+采用随机梯度下降算法训练神经网络时使用滑动平均模型在很多应用中可以在一定程度提高最终模型在测试数据上的表现
+
+#### MNIST数字识别
 
