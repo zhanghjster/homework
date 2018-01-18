@@ -4,11 +4,17 @@ import (
 	"fmt"
 	"reflect"
 	"unsafe"
-	"time"
 )
 
+type Int []int
+
 func main() {
-	fmt.Println(time.Now().Format("20060102"))
+	var a Int
+	a = append(a, 10)
+	fmt.Println(a)
+	var b []int
+	b = append(b, 10)
+	fmt.Println(b)
 }
 
 func InspectSlice(slice []int) {
