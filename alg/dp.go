@@ -1,7 +1,5 @@
 package alg
 
-
-
 // dynamic programing
 
 // count(c []int, n - c[m-1]) + count(c [0:m-1]int, n)

@@ -1,9 +1,10 @@
 package pool
 
 import (
-	"github.com/pkg/errors"
 	"net"
 	"sync"
+
+	"github.com/pkg/errors"
 )
 
 var (

@@ -1,8 +1,9 @@
 package alg
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var qs = []int{9, 4, 1, 5, 2, 8, 7, 3, 6}
@@ -28,7 +29,7 @@ func TestInsertionSort(t *testing.T) {
 
 func TestCountingSort(t *testing.T) {
 	var a = []int{1, 4, 1, 2, 7, 5, 2}
-	assert.ObjectsAreEqual([]int{1,1,2,2,4,5,7}, CountingSort(a,9))
+	assert.ObjectsAreEqual([]int{1, 1, 2, 2, 4, 5, 7}, CountingSort(a, 9))
 }
 
 func BenchmarkLomutoQuickSort(b *testing.B) {

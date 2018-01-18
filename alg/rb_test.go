@@ -1,8 +1,9 @@
 package alg
 
 import (
-	"github.com/magiconair/properties/assert"
 	"testing"
+
+	"github.com/magiconair/properties/assert"
 )
 
 func TestRabinKarp(t *testing.T) {
