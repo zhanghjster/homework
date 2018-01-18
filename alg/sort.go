@@ -1,5 +1,31 @@
 package alg
 
+func CountingSort(a []int, k int) []int {
+	// 数组的每一项保存键值小于或等于其索引的元素的个数
+	var c = make([]int, k)
+
+	// 将输入数组元素直接当做键值
+	// 计算每个键值的出现次数
+	for _, v := range a {
+		c[v]++
+	}
+
+	// 计算不大于每个键值的键值个数
+	// 也就是键值对应元素在输出数组里的索引
+	for i := 1; i < len(c); i++ {
+		c[i] += c[i-1]
+	}
+
+	// 按照c里计算的每个键值所在索引生成输出
+	b := make([]int, len(a))
+	for i := len(a) - 1; i >= 0; i-- {
+		b[c[a[i]]-1] = a[i]
+		c[a[i]]--
+	}
+
+	return b
+}
+
 func LomutoQuickSort(a []int) {
 	if len(a) > 1 {
 		pi := LomutoPartition(a)
@@ -27,9 +53,9 @@ func HoareQuickSort(a []int) {
 // j = 5: i = 1,  (v = 5) = 5, i=2, a[2] <=> a[5],  a = {3, 2，5，7，6，8，9，5}
 // j = 6: i = 2,  (v = 9) > 5, skip					a = {3, 2，5，7，6，8，9，5}
 // a[i+1] <=> a[len(a)-1], 							a = {3, 2，5，5，6，8，9，7}
-func LomutoPartition(a []int) int{
+func LomutoPartition(a []int) int {
 	// i 为小于pivot的值的最大的索引
-	var i int = -1
+	var i = -1
 
 	var h = len(a) - 1
 	// 取最后一个元素为pivot
@@ -66,8 +92,10 @@ func HoarePartition(a []int) int {
 	var i, j = -1, len(a)
 	p := a[0]
 	for {
-		for i++;a[i] < p; i++ {}
-		for j--;a[j] > p; j-- {}
+		for i++; a[i] < p; i++ {
+		}
+		for j--; a[j] > p; j-- {
+		}
 		if i >= j {
 			return j
 		}

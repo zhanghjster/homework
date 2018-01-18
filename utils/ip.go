@@ -22,7 +22,7 @@ func Ip4ToInt(ip string) (uint32, error) {
 			seg = 10*seg + uint32(c-'0')
 		}
 
-		if c == '.' || i == (len(ip) - 1) {
+		if c == '.' || i == (len(ip)-1) {
 			res = seg<<(8*(3-m)) + res
 			seg, m = 0, m+1
 		}
@@ -59,8 +59,8 @@ func MaskToInt(m string) (uint32, error) {
 	}
 
 	var mask uint32
-	for i:=0; i < s; i++ {
-		mask = mask | 1 << uint32(31 - i)
+	for i := 0; i < s; i++ {
+		mask = mask | 1<<uint32(31-i)
 	}
 
 	return mask, nil

@@ -1,8 +1,8 @@
 package utils
 
 import (
-	"unsafe"
 	"fmt"
+	"unsafe"
 )
 
 func InspectSlice(slice []int) {
@@ -25,8 +25,8 @@ func InspectSlice(slice []int) {
 	fmt.Printf("  Slice Addr[%p], Len Addr[0x%x] Cap Addr[0x%x]\n", addr, lenAddr, capAddr)
 	fmt.Printf("  Slice length[%d] Cap[%d]\n", *lenPtr, *capPtr)
 
-	for i :=0; i < *capPtr; i++ {
-		p := unsafe.Pointer(uintptr(arrPtr) + uintptr(i) * uintptr(unsafe.Sizeof(int(0))))
+	for i := 0; i < *capPtr; i++ {
+		p := unsafe.Pointer(uintptr(arrPtr) + uintptr(i)*uintptr(unsafe.Sizeof(int(0))))
 		fmt.Printf("  [%d] %p %d\n", i, (*int)(p), *(*int)(p))
 	}
 }

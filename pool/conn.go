@@ -1,16 +1,16 @@
 package pool
 
 import (
+	"github.com/pkg/errors"
 	"net"
 	"sync"
-	"github.com/pkg/errors"
 )
 
 var (
 	ErrNoConnCreated = errors.New("no connection created")
-	ErrPut = errors.New("fail put the connection back")
-	ErrGetEmpty = errors.New("no connection free")
-	ErrPoolClosed = errors.New("pool closed")
+	ErrPut           = errors.New("fail put the connection back")
+	ErrGetEmpty      = errors.New("no connection free")
+	ErrPoolClosed    = errors.New("pool closed")
 )
 
 type Connection interface {
@@ -38,7 +38,7 @@ func NewConnectionPool(length, capacity int, d Dialer) (Connection, error) {
 	}
 
 	// initial all connections
-	for i:=0; i < length; i++ {
+	for i := 0; i < length; i++ {
 		if c, err := d(); err == nil {
 			p.length++
 			p.conn <- c
@@ -61,7 +61,7 @@ func (p *ChannelConnectionPool) Get() (net.Conn, error) {
 	}
 
 	select {
-	case c := <- p.conn:
+	case c := <-p.conn:
 		return c, nil
 	default:
 		// create new one
@@ -93,13 +93,13 @@ func (p *ChannelConnectionPool) Put(conn net.Conn) error {
 	return nil
 }
 
-func (c *ChannelConnectionPool) Len() int{
+func (c *ChannelConnectionPool) Len() int {
 	c.mux.Lock()
 	defer c.mux.Unlock()
 	return len(c.conn)
 }
 
-func (c *ChannelConnectionPool) Close() error{
+func (c *ChannelConnectionPool) Close() error {
 	c.mux.Lock()
 	defer c.mux.Unlock()
 

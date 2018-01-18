@@ -1,21 +1,23 @@
 package alg
 
+
+
 // dynamic programing
 
 // count(c []int, n - c[m-1]) + count(c [0:m-1]int, n)
 func Changes(coins []int, n int) int {
 	m := len(coins)
-	var s = make([][]int, n + 1)
-	for i:=0; i < len(s); i++ {
-		s[i] = make([]int, m + 1)
+	var s = make([][]int, n+1)
+	for i := 0; i < len(s); i++ {
+		s[i] = make([]int, m+1)
 	}
 
-	for i:=0; i <= m; i++ {
+	for i := 0; i <= m; i++ {
 		s[0][i] = 1
 	}
 
-	for i:=1; i<=n; i++ {
-		for j:=1; j<=m; j++ {
+	for i := 1; i <= n; i++ {
+		for j := 1; j <= m; j++ {
 			if k := i - coins[j-1]; k >= 0 {
 				s[i][j] = s[i][j-1] + s[k][j]
 			} else {
@@ -34,7 +36,7 @@ func ChangeOptimized(coins []int, m int) int {
 	dp[0] = 1
 
 	for _, c := range coins {
-		for i:=1; i<= m; i++ {
+		for i := 1; i <= m; i++ {
 			if i >= c {
 				dp[i] += dp[i-c]
 			}
