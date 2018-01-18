@@ -33,6 +33,7 @@ func main() {
 	}
 
 	cmd.Wait()
+
 }
 
 func InspectSlice(slice []int) {
