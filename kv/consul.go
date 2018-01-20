@@ -61,10 +61,9 @@ func (c *Consul) Watch(key string, opt *QueryOption) (chan *Pair, error) {
 		for {
 			pairCh <- c.convertPair(p)
 
-			var qOpt = &api.QueryOptions{
+			var qOpt = api.QueryOptions{
 				WaitIndex: mt.LastIndex,
-				Context:   ctx,
-			}
+			}.WithContext(ctx)
 
 			p, mt, err = c.kv.Get(key, qOpt)
 
@@ -94,10 +93,9 @@ func (c *Consul) WatchList(prefix string, opt *QueryOption) (chan Pairs, error) 
 		for {
 			pairsCh <- c.convertPairs(l)
 
-			var qOpt = &api.QueryOptions{
+			var qOpt = api.QueryOptions{
 				WaitIndex: mt.LastIndex,
-				Context:   opt.Context,
-			}
+			}.WithContext(ctx)
 
 			l, mt, _ = c.kv.List(prefix, qOpt)
 
