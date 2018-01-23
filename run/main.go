@@ -1,38 +1,16 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"log"
-	"os/exec"
 	"reflect"
 	"unsafe"
+
+	"github.com/log-courier/lc-lib/config"
 )
 
 func main() {
-	cmd := exec.Command(
-		"you-get",
-		"https://www.youtube.com/watch?v=ydIPKkjBlMw",
-		"-s127.0.0.1:1080",
-	)
 
-	cmdReader, err := cmd.StdoutPipe()
-	if err != nil {
-		log.Fatal(err)
-	}
-	scanner := bufio.NewScanner(cmdReader)
-	scanner.Split(bufio.ScanRunes)
-	go func() {
-		for scanner.Scan() {
-			fmt.Print(scanner.Text())
-		}
-	}()
-
-	if err = cmd.Start(); err != nil {
-		log.Fatal(err)
-	}
-
-	cmd.Wait()
+	conf := config.NewConfig()
 
 }
 
