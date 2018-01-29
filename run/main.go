@@ -2,16 +2,54 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"reflect"
 	"unsafe"
 
-	"github.com/log-courier/lc-lib/config"
+	"io"
+
+	"time"
+
+	"github.com/gorilla/mux"
+	log "github.com/sirupsen/logrus"
 )
 
 func main() {
+	r := mux.NewRouter()
 
-	conf := config.NewConfig()
+	r1 := r.Host("www.benxos.com").Subrouter()
 
+	r1.Use(middlewareLogger)
+	r1.Use(middlewareTimer)
+
+	http.PostForm()
+
+	http.ListenAndServe(":6666", r)
+}
+
+func accountsHandler(w http.ResponseWriter, r *http.Request) {
+	accountId := mux.Vars(r)["accountId"]
+	log.Info("accountId: ", accountId)
+
+	username := r.FormValue("username")
+	log.Info("username: ", username)
+
+	io.WriteString(w, fmt.Sprintf("account id is %s, username is %s\n", accountId, username))
+}
+
+func middlewareLogger(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Info("in logger middleware")
+		next.ServeHTTP(w, r)
+	})
+}
+
+func middlewareTimer(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		t0 := time.Now()
+		next.ServeHTTP(w, r)
+		log.Infof("time used %d", time.Now().Sub(t0))
+	})
 }
 
 func InspectSlice(slice []int) {
