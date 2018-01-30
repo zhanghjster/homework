@@ -1,19 +1,18 @@
 package main
 
 import (
+	"container/list"
 	"fmt"
 	"reflect"
 	"unsafe"
-
-	"github.com/log-courier/lc-lib/config"
 )
 
 func main() {
-
-	conf := config.NewConfig()
-
+	list.New()
 }
 
+func asdf(args ...int) {
+}
 func InspectSlice(slice []int) {
 	// 数组的地址
 	addr := unsafe.Pointer(&slice)
