@@ -8,13 +8,12 @@ import (
 )
 
 var (
-	ErrNoConnCreated = errors.New("no connection created")
-	ErrPut           = errors.New("fail put the connection back")
 	ErrGetEmpty      = errors.New("no connection free")
 	ErrPoolClosed    = errors.New("pool closed")
+	ErrNoConnCreated = errors.New("no connection created")
 )
 
-type Connection interface {
+type ConnectionPool interface {
 	Get() (net.Conn, error)
 	Put(conn net.Conn) error
 	Len() int
@@ -31,7 +30,7 @@ type ChannelConnectionPool struct {
 	d        Dialer
 }
 
-func NewConnectionPool(length, capacity int, d Dialer) (Connection, error) {
+func NewConnectionPool(length, capacity int, d Dialer) (ConnectionPool, error) {
 	p := &ChannelConnectionPool{
 		conn:     make(chan net.Conn, capacity),
 		capacity: capacity,
@@ -88,27 +87,26 @@ func (p *ChannelConnectionPool) Put(conn net.Conn) error {
 	select {
 	case p.conn <- conn:
 	default:
-		return ErrPut
 	}
 
 	return nil
 }
 
-func (c *ChannelConnectionPool) Len() int {
-	c.mux.Lock()
-	defer c.mux.Unlock()
-	return len(c.conn)
+func (p *ChannelConnectionPool) Len() int {
+	p.mux.Lock()
+	defer p.mux.Unlock()
+	return len(p.conn)
 }
 
-func (c *ChannelConnectionPool) Close() error {
-	c.mux.Lock()
-	defer c.mux.Unlock()
+func (p *ChannelConnectionPool) Close() error {
+	p.mux.Lock()
+	defer p.mux.Unlock()
 
-	for conn := range c.conn {
+	for conn := range p.conn {
 		conn.Close()
 	}
 
-	close(c.conn)
+	close(p.conn)
 
 	return nil
 }

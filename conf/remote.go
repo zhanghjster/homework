@@ -5,6 +5,7 @@ import (
 
 	"errors"
 
+	"github.com/etcd/clientv3"
 	"github.com/hashicorp/consul/api"
 )
 
@@ -12,7 +13,7 @@ type ProviderType int
 
 const (
 	ProviderConsul ProviderType = iota
-	// TODO: support etcd
+	ProviderEtcd
 )
 
 type QueryMeta struct {
@@ -46,6 +47,8 @@ func NewRemoteProvider(pt ProviderType, addr string) (p Provider, err error) {
 	switch pt {
 	case ProviderConsul:
 		return newConsul(addr)
+	case ProviderEtcd:
+		return newEtcd(addr)
 	default:
 		err = errors.New("provider not supported")
 	}
@@ -175,7 +178,6 @@ func (c *Consul) convertPairs(ps api.KVPairs) KVPairs {
 	return pairs
 }
 
-/*
 type Etcd struct {
 	Addr   string
 	client *clientv3.Client
@@ -264,5 +266,3 @@ func (e *Etcd) WatchRemote(ctx context.Context, key string, opt *QueryOption) (<
 
 	return rCh, nil
 }
-
-*/
