@@ -33,6 +33,7 @@ func (l *DoublyLinkList) Init() *DoublyLinkList {
 	l.root.pre = &l.root
 	l.root.next = &l.root
 	l.length = 0
+
 	return l
 }
 
