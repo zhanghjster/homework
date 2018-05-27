@@ -7,6 +7,8 @@ import (
 
 	"sync"
 
+	"fmt"
+
 	"github.com/spf13/viper"
 	_ "github.com/spf13/viper/remote"
 )
@@ -71,4 +73,6 @@ func main() {
 	var wg sync.WaitGroup
 	wg.Add(1)
 	wg.Wait()
+
+	fmt.Println()
 }
