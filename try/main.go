@@ -1,1 +1,5 @@
-package try
+package main
+
+func main() {
+  
+}
