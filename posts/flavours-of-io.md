@@ -9,9 +9,7 @@ tags:
   - Direct IO
 ---
 
-```
-本文翻译于 https://medium.com/databasss/on-disk-io-part-1-flavours-of-io-8e1ace1de017
-```
+本文是读后翻译，原文在此[On Disk IO, Part 1: Flavors of IO](https://medium.com/databasss/on-disk-io-part-1-flavours-of-io-8e1ace1de017)
 
 了解IO的工作原理、使用场景、底层存储系统、及算法取舍对于开发和运维人员的日常工作都有很大帮助，能使他们在数据库选型、问题定位、性能调优等方面会做出更佳的选择
 
@@ -28,6 +26,8 @@ IO有多种概念：
 内存映射IO：open，mmap，msync，munmap
 
 我们先来讨论标准IO以及用户态优化，因为程序开发人员最终使用的最多
+
+<!-- more -->
 
 #### Buffered IO
 
