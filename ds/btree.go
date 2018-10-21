@@ -310,12 +310,12 @@ func (s *BTreeNode) merge(idx int) {
 	left.n += right.t
 
 	// s的key复制
-	for i := idx; i < len(s.keys)-1; i++ {
+	for i := idx; i < s.n-1; i++ {
 		s.keys[i] = s.keys[i+1]
 	}
 
 	// s的child复制
-	for i := idx + 1; i < len(s.children)-1; i++ {
+	for i := idx + 1; i < s.n; i++ {
 		s.children[i] = s.children[i+1]
 	}
 
